@@ -24,7 +24,7 @@ public class HTMLParser {
         sourceCode = "";
     }
 
-    public String grabHomePageSource() {
+    public String getSourceCode() {
         try {
             String url = "https://www.cs61a.org";
             HttpClient httpClient = new DefaultHttpClient();
