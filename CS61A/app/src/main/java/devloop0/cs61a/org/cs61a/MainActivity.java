@@ -11,7 +11,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         TextView textView = (TextView) findViewById(R.id.test);
-        HTMLDownloader htmlDownloader = new HTMLDownloader();
+        HTMLDownloader htmlDownloader = new HTMLDownloader(textView);
         htmlDownloader.execute();
     }
 }

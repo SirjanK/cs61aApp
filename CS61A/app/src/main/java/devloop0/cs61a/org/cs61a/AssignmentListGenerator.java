@@ -23,5 +23,7 @@ public class AssignmentListGenerator {
         }
     }
 
-
+    public ArrayList<Assignment> getAssignmentList() {
+        return assignmentArrayList;
+    }
 }
