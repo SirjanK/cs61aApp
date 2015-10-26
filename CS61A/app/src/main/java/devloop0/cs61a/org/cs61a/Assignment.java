@@ -4,39 +4,50 @@ import java.util.Date;
 /**
  * Created by nathr on 10/24/2015.
  */
+
 public class Assignment {
     String assignmentName;
     long releaseTime, dueTime; // time in milliseconds
     String description;
+    AssignmentKind assignmentKind;
 
-    public Assignment(String an, long rd, long dd, String d) {
+    public enum AssignmentKind {
+        ASSIGNMENT_KIND_LAB, ASSIGNMENT_KIND_QUIZ, ASSIGNMENT_KIND_HOMEWORK, ASSIGNMENT_KIND_PROJECT, ASSIGNMENT_KIND_NONE
+    }
+
+    public Assignment(String an, long rd, long dd, String d, AssignmentKind ak) {
         assignmentName = an;
         releaseTime = rd;
         dueTime = dd;
         description = d;
+        assignmentKind = ak;
     }
 
-    String getAssignmentName() {
+    public String getAssignmentName() {
         return assignmentName;
     }
 
-    long getReleaseTime() {
+    public long getReleaseTime() {
         return releaseTime;
     }
 
-    long getDueTime() {
+    public long getDueTime() {
         return dueTime;
     }
 
-    String getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    Date getReleaseDate() {
+    public Date getReleaseDate() {
         return new Date(releaseTime);
     }
 
-    Date getDueDate() {
+    public Date getDueDate() {
         return new Date(dueTime);
+    }
+
+    public AssignmentKind getAssignmentKind() {
+        return assignmentKind;
     }
 }
