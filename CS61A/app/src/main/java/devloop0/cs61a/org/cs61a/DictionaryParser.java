@@ -8,13 +8,22 @@ import java.util.*;
  * and uses the dictionary to generate lists
  */
 public class DictionaryParser {
-    private ArrayList<String> assignments;
+    private ArrayList<String[]> assignments;
     String srcCode;
 
     public DictionaryParser(String sc)
     {
         srcCode = sc;
-        assignments = new ArrayList<String>();
+        assignments = new ArrayList<String[]>();
+
+        String dict = findDict();
+        ArrayList<String> informalAssigns = generateObjectList(dict);
+        setAssignmentList(informalAssigns);
+    }
+
+    public ArrayList<String[]> getAssignments()
+    {
+        return assignments;
     }
 
     public String findDict()
@@ -58,7 +67,9 @@ public class DictionaryParser {
             dueDate = processDate(dueDate);
             startDate = processDate(startDate);
 
-            assignments.add(new Assignment())
+            String[] assignList = {name, startDate, dueDate, "", type};
+
+            assignments.add(assignList);
         }
     }
 

@@ -15,8 +15,8 @@ public class AssignmentListGenerator {
 
     // String array format:
     //  1. Assignment name
-    //  2. Release date (milliseconds)
-    //  3. Due date (milliseconds)
+    //  2. Release date (String)
+    //  3. Due date (String)
     //  4. Assignment description
     //  5. Assignment kind (string) Lab/Homework/Project/Quiz
     public AssignmentListGenerator(ArrayList<String[]> assignmentDataList) {

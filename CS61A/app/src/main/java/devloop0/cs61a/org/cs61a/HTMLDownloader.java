@@ -12,6 +12,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by nathr on 10/13/2015.
@@ -23,11 +25,7 @@ public class HTMLDownloader extends AsyncTask {
         sourceCode = "";
     }
 
-<<<<<<< HEAD:CS61A/app/src/main/java/devloop0/cs61a/org/cs61a/HTMLParser.java
-    public String getSourceCode() {
-=======
     private String grabHomePageSource() {
->>>>>>> 30d2395f7c9ae5ff0bf8a47e231183eda8612d5c:CS61A/app/src/main/java/devloop0/cs61a/org/cs61a/HTMLDownloader.java
         try {
             String url = "http://www.cs61a.org";
             DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
@@ -56,5 +54,15 @@ public class HTMLDownloader extends AsyncTask {
     protected Object doInBackground(Object[] params) {
         grabHomePageSource();
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Object o) {
+        super.onPostExecute(o);
+        DictionaryParser par = new DictionaryParser(sourceCode);
+        ArrayList<String[]> ar = par.getAssignments();
+
+        for(int i=0; i<ar.size(); i++)
+            Log.i("Dictionary Parser", Arrays.toString(ar.get(i)));
     }
 }
