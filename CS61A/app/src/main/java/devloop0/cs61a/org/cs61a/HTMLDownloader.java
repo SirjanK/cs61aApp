@@ -1,6 +1,7 @@
 package devloop0.cs61a.org.cs61a;
 
 import android.os.AsyncTask;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -20,9 +21,11 @@ import java.util.Arrays;
  */
 public class HTMLDownloader extends AsyncTask {
     String sourceCode = null;
+    RecyclerView recyclerView;
 
-    public HTMLDownloader() {
+    public HTMLDownloader(RecyclerView rv) {
         sourceCode = "";
+        recyclerView = rv;
     }
 
     private String grabHomePageSource() {
@@ -65,6 +68,6 @@ public class HTMLDownloader extends AsyncTask {
         /*for(int i=0; i<ar.size(); i++)
             Log.i("Dictionary Parser", Arrays.toString(ar.get(i)));*/
 
-        AssignmentListGenerator gen = new AssignmentListGenerator(ar);
+        recyclerView.setAdapter(new CardAdapter(new AssignmentListGenerator(ar)));
     }
 }

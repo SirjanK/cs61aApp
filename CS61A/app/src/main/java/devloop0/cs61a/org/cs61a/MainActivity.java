@@ -13,10 +13,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.main_assignment_list);
-        HTMLDownloader htmlDownloader = new HTMLDownloader();
-        htmlDownloader.execute();
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new CardAdapter());
+        HTMLDownloader htmlDownloader = new HTMLDownloader(recyclerView);
+        htmlDownloader.execute();
     }
 }
