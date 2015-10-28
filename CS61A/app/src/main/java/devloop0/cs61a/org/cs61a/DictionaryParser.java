@@ -10,7 +10,7 @@ import java.util.*;
 public class DictionaryParser
 {
     private ArrayList<String[]> assignments;
-    String srcCode;
+    private String srcCode;
 
     public DictionaryParser(String sc)
     {
@@ -27,15 +27,15 @@ public class DictionaryParser
         return assignments;
     }
 
-    public String findDict()
+    private String findDict()
     {
         int startIndex = srcCode.indexOf("var assignments");
-        int endIndex = srcCode.indexOf("($document)");
+        int endIndex = srcCode.lastIndexOf("$(document)");
 
         return srcCode.substring(startIndex, endIndex);
     }
 
-    public ArrayList<String> generateObjectList(String dict) {
+    private ArrayList<String> generateObjectList(String dict) {
         ArrayList<String> dictList = new ArrayList<String>();
 
         while (true) {
@@ -53,7 +53,7 @@ public class DictionaryParser
         return dictList;
     }
 
-    public void setAssignmentList(ArrayList<String> dictList)
+    private void setAssignmentList(ArrayList<String> dictList)
     {
         for(int i=0; i<dictList.size(); i++)
         {
@@ -74,7 +74,7 @@ public class DictionaryParser
         }
     }
 
-    public String type(String name)
+    private String type(String name)
     {
         String indicator = name.substring(0, 3);
         if(indicator.equals("Lab"))
@@ -87,7 +87,7 @@ public class DictionaryParser
             return "Project";
     }
 
-    public String processDate(String date) {
+    private String processDate(String date) {
         int firstSlash = date.indexOf('/');
         if (date.substring(0, firstSlash).length() == 1) {
             date = "0" + date;
@@ -102,12 +102,12 @@ public class DictionaryParser
         return date;
     }
 
-    public int[] getImportantIndices(String dict) {
+    private int[] getImportantIndices(String dict) {
         int dueB = 8;
-        int dueE = dict.indexOf("link") - 3;
+        int dueE = dict.indexOf("link") - 4;
         int nameB = dict.indexOf("name") + 8;
-        int nameE = dict.indexOf("release") - 3;
-        int releaseB = dict.indexOf("release") + 12;
+        int nameE = dict.indexOf("release") - 4;
+        int releaseB = dict.indexOf("release") + 11;
         int releaseE = dict.length() - 1;
 
         int[] indices = {dueB, dueE, nameB, nameE, releaseB, releaseE};

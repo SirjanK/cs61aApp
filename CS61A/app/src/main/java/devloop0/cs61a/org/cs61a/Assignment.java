@@ -50,4 +50,9 @@ public class Assignment {
     public AssignmentKind getAssignmentKind() {
         return assignmentKind;
     }
+
+    public String toString()
+    {
+        return "Name: " + assignmentName + " Release Date: " + releaseTime + " Due Date: " + dueTime + " description: " + description + " type: " + assignmentKind;
+    }
 }
