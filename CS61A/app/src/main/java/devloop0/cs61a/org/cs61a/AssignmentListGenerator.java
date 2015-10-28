@@ -5,6 +5,7 @@ import android.util.Log;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by nathr on 10/25/2015.
@@ -20,6 +21,7 @@ public class AssignmentListGenerator {
     //  4. Assignment description
     //  5. Assignment kind (string) Lab/Homework/Project/Quiz
     public AssignmentListGenerator(ArrayList<String[]> assignmentDataList) {
+        assignmentArrayList = new ArrayList<Assignment>();
         try {
             for (String[] data : assignmentDataList) {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yy");
@@ -27,6 +29,7 @@ public class AssignmentListGenerator {
                         (data[4] == "Lab" ? Assignment.AssignmentKind.ASSIGNMENT_KIND_LAB : (data[4] == "Homework" ? Assignment.AssignmentKind.ASSIGNMENT_KIND_HOMEWORK :
                                 (data[4] == "Quiz" ? Assignment.AssignmentKind.ASSIGNMENT_KIND_QUIZ : (data[4] == "Project" ? Assignment.AssignmentKind.ASSIGNMENT_KIND_PROJECT : Assignment.AssignmentKind.ASSIGNMENT_KIND_NONE))))));
             }
+            Log.i("ArrayList", assignmentArrayList.toString());
         }
         catch(ParseException ex) {
             Log.e("Date parsing failed", ex.getMessage());

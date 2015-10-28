@@ -2,6 +2,8 @@ package devloop0.cs61a.org.cs61a;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -10,8 +12,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TextView textView = (TextView) findViewById(R.id.test);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.main_assignment_list);
         HTMLDownloader htmlDownloader = new HTMLDownloader();
         htmlDownloader.execute();
+        recyclerView.setHasFixedSize(false);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new CardAdapter());
     }
 }

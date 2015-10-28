@@ -61,4 +61,9 @@ public class Assignment {
     public boolean seen() {
         return seen;
     }
+
+    public String toString()
+    {
+        return "Name: " + assignmentName + " Release Date: " + releaseTime + " Due Date: " + dueTime + " description: " + description + " type: " + assignmentKind;
+    }
 }

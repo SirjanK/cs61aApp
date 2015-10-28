@@ -62,7 +62,9 @@ public class HTMLDownloader extends AsyncTask {
         DictionaryParser par = new DictionaryParser(sourceCode);
         ArrayList<String[]> ar = par.getAssignments();
 
-        for(int i=0; i<ar.size(); i++)
-            Log.i("Dictionary Parser", Arrays.toString(ar.get(i)));
+        /*for(int i=0; i<ar.size(); i++)
+            Log.i("Dictionary Parser", Arrays.toString(ar.get(i)));*/
+
+        AssignmentListGenerator gen = new AssignmentListGenerator(ar);
     }
 }
