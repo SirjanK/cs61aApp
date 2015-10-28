@@ -59,6 +59,7 @@ public class HTMLDownloader extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
+        Log.i("Diction", ""+sourceCode.length());
         DictionaryParser par = new DictionaryParser(sourceCode);
         ArrayList<String[]> ar = par.getAssignments();
 

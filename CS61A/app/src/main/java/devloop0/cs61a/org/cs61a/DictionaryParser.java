@@ -7,7 +7,8 @@ import java.util.*;
  * Takes the source code from HTMLParser.java
  * and uses the dictionary to generate lists
  */
-public class DictionaryParser {
+public class DictionaryParser
+{
     private ArrayList<String[]> assignments;
     String srcCode;
 
@@ -86,24 +87,22 @@ public class DictionaryParser {
             return "Project";
     }
 
-    public String processDate(String date)
-    {
+    public String processDate(String date) {
         int firstSlash = date.indexOf('/');
-        if(date.substring(0, firstSlash).length() == 1) {
+        if (date.substring(0, firstSlash).length() == 1) {
             date = "0" + date;
             firstSlash++;
         }
 
         int secondSlash = date.indexOf('/');
 
-        if(date.substring(firstSlash, secondSlash).length() == 1)
-            date = date.substring(0, firstSlash+1) + "0" + date.substring(secondSlash-1);
+        if (date.substring(firstSlash, secondSlash).length() == 1)
+            date = date.substring(0, firstSlash + 1) + "0" + date.substring(secondSlash - 1);
 
         return date;
     }
 
-    public int[] getImportantIndices(String dict)
-    {
+    public int[] getImportantIndices(String dict) {
         int dueB = 8;
         int dueE = dict.indexOf("link") - 3;
         int nameB = dict.indexOf("name") + 8;
