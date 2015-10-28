@@ -36,10 +36,10 @@ public class HTMLDownloader extends AsyncTask {
             StringBuilder stringBuilder = new StringBuilder();
             String line = null;
             while ((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line);
+                stringBuilder.append(line + "\n");
             }
             sourceCode = stringBuilder.toString();
-            Log.e("SOURCE", sourceCode);
+            Log.i("SOURCE", sourceCode);
         } catch (IOException io) {
             Log.e("Download failed", io.getMessage());
         }
