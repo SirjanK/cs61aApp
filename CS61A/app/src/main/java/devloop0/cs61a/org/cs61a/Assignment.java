@@ -10,6 +10,7 @@ public class Assignment {
     long releaseTime, dueTime; // time in milliseconds
     String description;
     AssignmentKind assignmentKind;
+    boolean seen;
 
     public enum AssignmentKind {
         ASSIGNMENT_KIND_LAB, ASSIGNMENT_KIND_QUIZ, ASSIGNMENT_KIND_HOMEWORK, ASSIGNMENT_KIND_PROJECT, ASSIGNMENT_KIND_NONE
@@ -21,6 +22,7 @@ public class Assignment {
         dueTime = dd;
         description = d;
         assignmentKind = ak;
+        seen = false;
     }
 
     public String getAssignmentName() {
@@ -49,5 +51,14 @@ public class Assignment {
 
     public AssignmentKind getAssignmentKind() {
         return assignmentKind;
+    }
+
+    public boolean toggleSeen() {
+        seen = !seen;
+        return seen;
+    }
+
+    public boolean seen() {
+        return seen;
     }
 }
