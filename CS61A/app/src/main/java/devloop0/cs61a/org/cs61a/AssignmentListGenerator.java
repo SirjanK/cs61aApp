@@ -6,6 +6,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Objects;
 
 /**
  * Created by nathr on 10/25/2015.
@@ -29,6 +32,20 @@ public class AssignmentListGenerator {
                         (data[4] == "Lab" ? Assignment.AssignmentKind.ASSIGNMENT_KIND_LAB : (data[4] == "Homework" ? Assignment.AssignmentKind.ASSIGNMENT_KIND_HOMEWORK :
                                 (data[4] == "Quiz" ? Assignment.AssignmentKind.ASSIGNMENT_KIND_QUIZ : (data[4] == "Project" ? Assignment.AssignmentKind.ASSIGNMENT_KIND_PROJECT : Assignment.AssignmentKind.ASSIGNMENT_KIND_NONE))))));
             }
+            Collections.sort(assignmentArrayList, new Comparator<Assignment>() {
+                @Override
+                public int compare(Assignment lhs, Assignment rhs) {
+                    if(lhs.getReleaseTime() < rhs.getReleaseTime()) {
+                        return -1;
+                    }
+                    else if(lhs.getReleaseTime() > rhs.getReleaseTime()) {
+                        return 1;
+                    }
+                    else {
+                        return 1;
+                    }
+                }
+            });
             Log.i("ArrayList", assignmentArrayList.toString());
         }
         catch(ParseException ex) {
