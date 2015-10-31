@@ -31,7 +31,6 @@ public class DictionaryParser
     {
         int startIndex = srcCode.indexOf("var assignments");
         int endIndex = srcCode.lastIndexOf("$(document)");
-
         return srcCode.substring(startIndex, endIndex);
     }
 
@@ -64,11 +63,18 @@ public class DictionaryParser
             String dueDate = assign.substring(indices[0], indices[1]);
             String startDate = assign.substring(indices[4], indices[5]);
             String type = type(name);
+            String description = type;
 
             dueDate = processDate(dueDate);
             startDate = processDate(startDate);
 
-            String[] assignList = {name, startDate, dueDate, "", type};
+            if(type.equals("Lab")) {
+                int colonIndex = name.indexOf(':');
+                description = name.substring(colonIndex + 1);
+                name = name.substring(0, name.indexOf(':'));
+            }
+
+            String[] assignList = {name, startDate, dueDate, description, type};
 
             assignments.add(assignList);
         }
