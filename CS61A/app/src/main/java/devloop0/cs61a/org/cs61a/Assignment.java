@@ -1,5 +1,6 @@
 package devloop0.cs61a.org.cs61a;
 
+import android.text.format.DateFormat;
 import java.util.Date;
 /**
  * Created by nathr on 10/24/2015.
@@ -47,6 +48,14 @@ public class Assignment {
 
     public Date getDueDate() {
         return new Date(dueTime);
+    }
+
+    public String getFormattedDueDateString() {
+        return (String) DateFormat.format("MM/dd/yy", dueTime);
+    }
+
+    public String getFormattedReleaseDateString() {
+        return (String) DateFormat.format("MM/dd/yy", releaseTime);
     }
 
     public AssignmentKind getAssignmentKind() {
