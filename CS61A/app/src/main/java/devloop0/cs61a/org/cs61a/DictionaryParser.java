@@ -33,7 +33,6 @@ public class DictionaryParser
     {
         int startIndex = srcCode.indexOf("var assignments");
         int endIndex = srcCode.lastIndexOf("$(document)");
-
         return srcCode.substring(startIndex, endIndex);
     }
 
@@ -90,7 +89,6 @@ public class DictionaryParser
             String description = getDescription(name, type);
             name = postProcessName(name, type);
             String link = generateAssignmentUrl(name, type);
-
             dueDate = processDate(dueDate);
             startDate = processDate(startDate);
 
