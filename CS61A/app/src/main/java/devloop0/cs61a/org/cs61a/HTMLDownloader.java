@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 
 /**
  * Created by nathr on 10/13/2015.
@@ -68,6 +69,26 @@ public class HTMLDownloader extends AsyncTask {
         /*for(int i=0; i<ar.size(); i++)
             Log.i("Dictionary Parser", Arrays.toString(ar.get(i)));*/
 
-        recyclerView.setAdapter(new CardAdapter(new AssignmentListGenerator(ar)));
+        AssignmentListGenerator assignmentListGenerator = new AssignmentListGenerator(ar);
+        CardAdapter cardAdapter = new CardAdapter(assignmentListGenerator);
+        long currentTimeInMilliseconds = Calendar.getInstance().getTimeInMillis();
+        final long twoDayLimit = 24 * 3600 * 2 * 1000; // 2 days in milliseconds
+        int initialScrollPosition = -1;
+        for(int i = 0; i < assignmentListGenerator.getAssignmentList().size(); i++) {
+            Assignment assignment = assignmentListGenerator.getAssignmentList().get(i);
+            if(assignment.getReleaseTime() > currentTimeInMilliseconds || assignment.getDueTime() < currentTimeInMilliseconds) {
+
+            }
+            else if(assignment.getDueTime() > currentTimeInMilliseconds) {
+                if(initialScrollPosition == -1) {
+                    initialScrollPosition = i;
+                    break;
+                }
+            }
+        }
+        recyclerView.setAdapter(cardAdapter);
+        Log.i("Initial Scroll Position", initialScrollPosition + " " + assignmentListGenerator.getAssignmentList().size());
+        if(initialScrollPosition > 0)
+            recyclerView.scrollToPosition(initialScrollPosition - 1);
     }
 }
