@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="5dp"
-            android:id="@+id/main_assignment_relative_layout">
+            android:id="@+id/main_assignment_linear_layout">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -33,7 +33,6 @@
                 android:id="@+id/assignment_description"
                 android:textStyle="italic"
                 android:textSize="24sp"
-                android:text="dlsdkjfgndf"
                 android:layout_marginBottom="24dp"/>
             <TextView
                 android:layout_width="match_parent"

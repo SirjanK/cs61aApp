@@ -17,6 +17,9 @@ public class AssignmentListGenerator {
 
     ArrayList<Assignment> assignmentArrayList;
 
+    // Day -1 minute in milliseconds (assignments are due at 11:59 PM the day of the due date
+    final long dayMinusOneMinute = (3600 * 24 - 60) * 1000;
+
     // String array format:
     //  1. Assignment name
     //  2. Release date (String)
@@ -28,9 +31,9 @@ public class AssignmentListGenerator {
         try {
             for (String[] data : assignmentDataList) {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yy");
-                assignmentArrayList.add(new Assignment(data[0], simpleDateFormat.parse(data[1]).getTime(), simpleDateFormat.parse(data[2]).getTime(), data[3],
-                        (data[4] == "Lab" ? Assignment.AssignmentKind.ASSIGNMENT_KIND_LAB : (data[4] == "Homework" ? Assignment.AssignmentKind.ASSIGNMENT_KIND_HOMEWORK :
-                                (data[4] == "Quiz" ? Assignment.AssignmentKind.ASSIGNMENT_KIND_QUIZ : (data[4] == "Project" ? Assignment.AssignmentKind.ASSIGNMENT_KIND_PROJECT : Assignment.AssignmentKind.ASSIGNMENT_KIND_NONE))))));
+                assignmentArrayList.add(new Assignment(data[0], simpleDateFormat.parse(data[1]).getTime(), simpleDateFormat.parse(data[2]).getTime() + dayMinusOneMinute, data[3], data[4],
+                        (data[5] == "Lab" ? Assignment.AssignmentKind.ASSIGNMENT_KIND_LAB : (data[5] == "Homework" ? Assignment.AssignmentKind.ASSIGNMENT_KIND_HOMEWORK :
+                                (data[5] == "Quiz" ? Assignment.AssignmentKind.ASSIGNMENT_KIND_QUIZ : (data[5] == "Project" ? Assignment.AssignmentKind.ASSIGNMENT_KIND_PROJECT : Assignment.AssignmentKind.ASSIGNMENT_KIND_NONE))))));
             }
             Collections.sort(assignmentArrayList, new Comparator<Assignment>() {
                 @Override

@@ -1,5 +1,7 @@
 package devloop0.cs61a.org.cs61a;
 
+import android.content.Intent;
+
 import java.util.*;
 
 /**
@@ -52,6 +54,27 @@ public class DictionaryParser
         return dictList;
     }
 
+    String generateAssignmentUrl(String postProcessedName, String type) {
+        String prefix = "http://www.cs61a.org/";
+        if(type == "Homework") {
+            String number = postProcessedName.substring(postProcessedName.indexOf(" ")).trim();
+            return prefix + "hw/hw" + (number.length() == 1 ? "0" + number : number) + "/";
+        }
+        else if(type == "Quiz") {
+            String number = postProcessedName.substring(postProcessedName.indexOf(" ")).trim();
+            return prefix + "quiz/quiz" + (number.length() == 1 ? "0" + number : number) + "/";
+        }
+        else if(type == "Project") {
+            String project_name = postProcessedName.trim().toLowerCase().replaceAll(" ", "_");
+            return prefix + "proj/" + project_name + "/";
+        }
+        else if(type == "Lab") {
+            String number = postProcessedName.substring(postProcessedName.indexOf(" ")).trim();
+            return prefix + "lab/lab" + (number.length() == 1 ? "0" + number : number) + "/";
+        }
+        return "";
+    }
+
     private void setAssignmentList(ArrayList<String> dictList)
     {
         for(int i=0; i<dictList.size(); i++)
@@ -63,21 +86,39 @@ public class DictionaryParser
             String dueDate = assign.substring(indices[0], indices[1]);
             String startDate = assign.substring(indices[4], indices[5]);
             String type = type(name);
-            String description = type;
-
+            String description = getDescription(name, type);
+            name = postProcessName(name, type);
+            String link = generateAssignmentUrl(name, type);
             dueDate = processDate(dueDate);
             startDate = processDate(startDate);
 
-            if(type.equals("Lab")) {
-                int colonIndex = name.indexOf(':');
-                description = name.substring(colonIndex + 1);
-                name = name.substring(0, name.indexOf(':'));
-            }
-
-            String[] assignList = {name, startDate, dueDate, description, type};
+            String[] assignList = {name, startDate, dueDate, description, link, type};
 
             assignments.add(assignList);
         }
+    }
+
+    String postProcessName(String name, String type) {
+        if(type == "Lab") {
+            return name.substring(0, name.indexOf(":"));
+        }
+        return name;
+    }
+
+    private String getDescription(String name, String type) {
+        if(type == "Homework") {
+            return "Homework Assignment";
+        }
+        else if(type == "Quiz") {
+            return "Quiz Assignment";
+        }
+        else if(type == "Project") {
+            return "Project Assignment";
+        }
+        else if(type == "Lab") {
+            return name.substring(name.indexOf(":") + 1).trim();
+        }
+        return "";
     }
 
     private String type(String name)

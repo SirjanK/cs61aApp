@@ -11,19 +11,19 @@ public class Assignment {
     long releaseTime, dueTime; // time in milliseconds
     String description;
     AssignmentKind assignmentKind;
-    boolean seen;
+    String assignmentLink;
 
     public enum AssignmentKind {
         ASSIGNMENT_KIND_LAB, ASSIGNMENT_KIND_QUIZ, ASSIGNMENT_KIND_HOMEWORK, ASSIGNMENT_KIND_PROJECT, ASSIGNMENT_KIND_NONE
     }
 
-    public Assignment(String an, long rd, long dd, String d, AssignmentKind ak) {
+    public Assignment(String an, long rd, long dd, String d, String l, AssignmentKind ak) {
         assignmentName = an;
         releaseTime = rd;
         dueTime = dd;
         description = d;
         assignmentKind = ak;
-        seen = false;
+        assignmentLink = l;
     }
 
     public String getAssignmentName() {
@@ -58,17 +58,12 @@ public class Assignment {
         return (String) DateFormat.format("MM/dd/yy", releaseTime);
     }
 
+    public String getAssignmentLink() {
+        return assignmentLink;
+    }
+
     public AssignmentKind getAssignmentKind() {
         return assignmentKind;
-    }
-
-    public boolean toggleSeen() {
-        seen = !seen;
-        return seen;
-    }
-
-    public boolean seen() {
-        return seen;
     }
 
     public String toString()
