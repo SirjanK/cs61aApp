@@ -10,6 +10,7 @@ public class Assignment {
     String assignmentName;
     long releaseTime, dueTime; // time in milliseconds
     String description;
+    public String url;
     AssignmentKind assignmentKind;
     String assignmentLink;
 

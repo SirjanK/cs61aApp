@@ -50,6 +50,7 @@ public class AssignmentActivity extends AppCompatActivity {
         final long assignmentReleaseTime = intent.getLongExtra("assignment_release_time", 0);
         final long assignmentDueTime = intent.getLongExtra("assignment_due_time", 0);
         String assignmentLink = intent.getStringExtra("assignment_link");
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             setTaskDescription(new ActivityManager.TaskDescription(assignmentTitle, BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher), getResources().getColor(R.color.colorPrimary)));

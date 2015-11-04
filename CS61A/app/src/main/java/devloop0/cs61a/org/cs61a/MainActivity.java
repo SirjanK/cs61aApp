@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.main_assignment_list);
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        HTMLDownloader htmlDownloader = new HTMLDownloader(recyclerView);
+        HTMLDownloader htmlDownloader = new HTMLDownloader("http://www.cs61a.org", recyclerView);
         htmlDownloader.execute();
     }
 

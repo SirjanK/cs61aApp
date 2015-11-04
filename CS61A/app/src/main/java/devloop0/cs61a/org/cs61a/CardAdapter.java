@@ -17,6 +17,9 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,24 +55,30 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Assignment assignment = assignmentArrayList.get(position);
+        boolean set = false;
+        int colorToSet = unreleasedAssignmentBackgroundColor;
         holder.assignmentName.setText(assignment.getAssignmentName());
         holder.assignmentDescription.setText(assignment.getDescription());
         holder.assignmentReleaseDate.setText(Html.fromHtml("<b>Release Date:</b> " + assignment.getFormattedReleaseDateString()));
         holder.assignmentDueDate.setText(Html.fromHtml("<b>Due Date:</b> " + assignment.getFormattedDueDateString()));
-        if(assignment.getReleaseTime() > currentTimeInMilliseconds) {
-            holder.assignmentLinearLayout.setBackgroundColor(unreleasedAssignmentBackgroundColor);
+
+        if(!set && assignment.getReleaseTime() > currentTimeInMilliseconds) {
+            colorToSet = unreleasedAssignmentBackgroundColor;
         }
         else if(assignment.getDueTime() < currentTimeInMilliseconds) {
-            holder.assignmentLinearLayout.setBackgroundColor(completedAssignmentBackgroundColor);
+            colorToSet = completedAssignmentBackgroundColor;
         }
-        else if(assignment.getDueTime() > currentTimeInMilliseconds) {
+        else if(!set && assignment.getDueTime() > currentTimeInMilliseconds) {
             if (assignment.getDueTime() - currentTimeInMilliseconds < twoDayLimit) {
-                holder.assignmentLinearLayout.setBackgroundColor(urgentAssignmentBackgroundColor);
+                colorToSet = urgentAssignmentBackgroundColor;
             }
             else {
-                holder.assignmentLinearLayout.setBackgroundColor(releasedAssignmentBackgroundColor);
+                colorToSet = releasedAssignmentBackgroundColor;
             }
         }
+
+        holder.assignmentLinearLayout.setBackgroundColor(colorToSet);
+
         holder.assignmentLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
