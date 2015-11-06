@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.parse.Parse;
 import com.parse.ParseInstallation;
+import com.parse.ParsePush;
 
 public class MainActivity extends AppCompatActivity {
 

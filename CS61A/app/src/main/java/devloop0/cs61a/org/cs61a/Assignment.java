@@ -33,9 +33,6 @@ public class Assignment {
         description = d;
         assignmentKind = ak;
         assignmentLink = l;
-        AssignmentOpenCheck check = new AssignmentOpenCheck(l);
-        check.execute("Holder");
-        this.isOpen = check.isOpen;
     }
 
     public String getAssignmentName() {
