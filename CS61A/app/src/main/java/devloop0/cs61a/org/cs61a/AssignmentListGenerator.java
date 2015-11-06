@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Objects;
@@ -49,6 +50,25 @@ public class AssignmentListGenerator {
                     }
                 }
             });
+            long currentTimeInMilliseconds = Calendar.getInstance().getTimeInMillis();
+            int first = -1;
+            for(int i = 0; i < assignmentArrayList.size(); i++) {
+                Assignment assignment = assignmentArrayList.get(i);
+                if(assignment.getReleaseTime() > currentTimeInMilliseconds || assignment.getDueTime() < currentTimeInMilliseconds) {
+
+                }
+                else if(assignment.getDueTime() > currentTimeInMilliseconds) {
+                    if(first == -1) {
+                        first = i;
+                        break;
+                    }
+                }
+            }
+            ArrayList<Assignment> end = new ArrayList<Assignment>(assignmentArrayList.subList(0, first));
+            ArrayList<Assignment> begin = new ArrayList<Assignment>(assignmentArrayList.subList(first, assignmentArrayList.size()));
+            assignmentArrayList.clear();
+            assignmentArrayList.addAll(begin);
+            assignmentArrayList.addAll(end);
             Log.i("ArrayList", assignmentArrayList.toString());
         }
         catch(ParseException ex) {

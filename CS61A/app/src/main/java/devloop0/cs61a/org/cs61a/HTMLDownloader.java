@@ -1,6 +1,7 @@
 package devloop0.cs61a.org.cs61a;
 
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
@@ -23,10 +24,12 @@ import java.util.Calendar;
 public class HTMLDownloader extends AsyncTask {
     String sourceCode = null;
     RecyclerView recyclerView;
+    SwipeRefreshLayout swipeRefreshLayout;
 
-    public HTMLDownloader(RecyclerView rv) {
+    public HTMLDownloader(RecyclerView rv, SwipeRefreshLayout srl) {
         sourceCode = "";
         recyclerView = rv;
+        swipeRefreshLayout = srl;
     }
 
     private String grabHomePageSource() {
@@ -71,24 +74,9 @@ public class HTMLDownloader extends AsyncTask {
 
         AssignmentListGenerator assignmentListGenerator = new AssignmentListGenerator(ar);
         CardAdapter cardAdapter = new CardAdapter(assignmentListGenerator);
-        long currentTimeInMilliseconds = Calendar.getInstance().getTimeInMillis();
-        final long twoDayLimit = 24 * 3600 * 2 * 1000; // 2 days in milliseconds
-        int initialScrollPosition = -1;
-        for(int i = 0; i < assignmentListGenerator.getAssignmentList().size(); i++) {
-            Assignment assignment = assignmentListGenerator.getAssignmentList().get(i);
-            if(assignment.getReleaseTime() > currentTimeInMilliseconds || assignment.getDueTime() < currentTimeInMilliseconds) {
-
-            }
-            else if(assignment.getDueTime() > currentTimeInMilliseconds) {
-                if(initialScrollPosition == -1) {
-                    initialScrollPosition = i;
-                    break;
-                }
-            }
-        }
         recyclerView.setAdapter(cardAdapter);
-        Log.i("Initial Scroll Position", initialScrollPosition + " " + assignmentListGenerator.getAssignmentList().size());
-        if(initialScrollPosition > 0)
-            recyclerView.scrollToPosition(initialScrollPosition - 1);
+        if(swipeRefreshLayout.isRefreshing()) {
+            swipeRefreshLayout.setRefreshing(false);
+        }
     }
 }
