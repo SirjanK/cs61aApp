@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -14,7 +15,7 @@ import java.net.URLConnection;
 
 public class AssignmentOpenCheck extends AsyncTask {
     private String assignmentLink;
-    boolean isOpen;
+    private boolean isOpen = false;
 
     public AssignmentOpenCheck(String url) {
         assignmentLink = url;
@@ -23,19 +24,21 @@ public class AssignmentOpenCheck extends AsyncTask {
     @Override
     protected String doInBackground(Object[] params) {
         try {
-            URL url = new URL(assignmentLink);
-            URLConnection myURLConnection = url.openConnection();
-            myURLConnection.connect();
-            isOpen = true;
-        }
-        catch (MalformedURLException e) {
-            isOpen = false;
+            URL url = new URL (assignmentLink);
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setRequestMethod("GET");
+            httpURLConnection.connect();
+            int code = httpURLConnection.getResponseCode();
+            isOpen = code == 200;
         }
         catch (IOException e) {
-            isOpen = false;
+            Log.e("Error", e.getMessage());
         }
-        Log.i("Test2", ""+isOpen);
         return null;
+    }
+
+    public boolean assignmentIsOpen() {
+        return isOpen;
     }
 }
 

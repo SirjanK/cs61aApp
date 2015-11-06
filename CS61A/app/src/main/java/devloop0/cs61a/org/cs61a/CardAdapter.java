@@ -56,16 +56,13 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Assignment assignment = assignmentArrayList.get(position);
         int colorToSet = unreleasedAssignmentBackgroundColor;
-
         holder.assignmentName.setText(assignment.getAssignmentName());
         holder.assignmentDescription.setText(assignment.getDescription());
         holder.assignmentReleaseDate.setText(Html.fromHtml("<b>Release Date:</b> " + assignment.getFormattedReleaseDateString()));
         holder.assignmentDueDate.setText(Html.fromHtml("<b>Due Date:</b> " + assignment.getFormattedDueDateString()));
-
         boolean urgent = assignment.getDueTime() - currentTimeInMilliseconds < twoDayLimit;
         boolean complete = assignment.getDueTime() < currentTimeInMilliseconds;
-
-        if(assignment.isOpen) {
+        if(assignment.assignmentIsOpen()) {
             if(complete)
                 colorToSet = completedAssignmentBackgroundColor;
             else if(urgent)
@@ -73,13 +70,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             else
                 colorToSet = releasedAssignmentBackgroundColor;
         }
-
         else {
             colorToSet = unreleasedAssignmentBackgroundColor;
         }
-
         holder.assignmentLinearLayout.setBackgroundColor(colorToSet);
-
         holder.assignmentLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

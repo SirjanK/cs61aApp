@@ -22,20 +22,18 @@ import java.util.Calendar;
  * Created by nathr on 10/13/2015.
  */
 public class HTMLDownloader extends AsyncTask {
-    String sourceCode = null;
-    String url = "";
+    String sourceCode = "";
     RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
 
     public HTMLDownloader(RecyclerView rv, SwipeRefreshLayout srl) {
         sourceCode = "";
-        this.url = url;
     }
 
      public String grabHomePageSource() {
         try {
             DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
-            HttpGet request = new HttpGet(url);
+            HttpGet request = new HttpGet("http://www.cs61a.org/");
             HttpResponse httpResponse = defaultHttpClient.execute(request);
             InputStream inputStream = httpResponse.getEntity().getContent();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -74,7 +72,7 @@ public class HTMLDownloader extends AsyncTask {
         AssignmentListGenerator assignmentListGenerator = new AssignmentListGenerator(ar);
         CardAdapter cardAdapter = new CardAdapter(assignmentListGenerator);
         recyclerView.setAdapter(cardAdapter);
-        if(swipeRefreshLayout.isRefreshing()) {
+        if (swipeRefreshLayout.isRefreshing()) {
             swipeRefreshLayout.setRefreshing(false);
         }
     }
