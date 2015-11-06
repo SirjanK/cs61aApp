@@ -1,6 +1,14 @@
 package devloop0.cs61a.org.cs61a;
 
 import android.text.format.DateFormat;
+
+import android.os.AsyncTask;
+import android.util.Log;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Date;
 /**
  * Created by nathr on 10/24/2015.
@@ -10,9 +18,9 @@ public class Assignment {
     String assignmentName;
     long releaseTime, dueTime; // time in milliseconds
     String description;
-    public String url;
     AssignmentKind assignmentKind;
     String assignmentLink;
+    boolean isOpen;
 
     public enum AssignmentKind {
         ASSIGNMENT_KIND_LAB, ASSIGNMENT_KIND_QUIZ, ASSIGNMENT_KIND_HOMEWORK, ASSIGNMENT_KIND_PROJECT, ASSIGNMENT_KIND_NONE
@@ -25,6 +33,9 @@ public class Assignment {
         description = d;
         assignmentKind = ak;
         assignmentLink = l;
+        AssignmentOpenCheck check = new AssignmentOpenCheck(l);
+        check.execute("Holder");
+        this.isOpen = check.isOpen;
     }
 
     public String getAssignmentName() {
@@ -67,8 +78,7 @@ public class Assignment {
         return assignmentKind;
     }
 
-    public String toString()
-    {
+    public String toString() {
         return "Name: " + assignmentName + " Release Date: " + releaseTime + " Due Date: " + dueTime + " description: " + description + " type: " + assignmentKind;
     }
 }
