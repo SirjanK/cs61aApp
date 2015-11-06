@@ -34,10 +34,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     long currentTimeInMilliseconds = -1;
     final long twoDayLimit = 24 * 3600 * 2 * 1000; // 2 days in milliseconds
 
-    final int releasedAssignmentBackgroundColor = Color.parseColor("#E6F3FF");
-    final int urgentAssignmentBackgroundColor = Color.parseColor("#FFE6FF");
-    final int completedAssignmentBackgroundColor = Color.parseColor("#E7FFE6");
-    final int unreleasedAssignmentBackgroundColor = Color.parseColor("#EDEFF0");
+    public final static int releasedAssignmentBackgroundColor = Color.parseColor("#E6F3FF");
+    public final static int urgentAssignmentBackgroundColor = Color.parseColor("#FFE6FF");
+    public final static int completedAssignmentBackgroundColor = Color.parseColor("#E7FFE6");
+    public final static int unreleasedAssignmentBackgroundColor = Color.parseColor("#EDEFF0");
 
     public CardAdapter(AssignmentListGenerator assignmentListGenerator) {
         super();

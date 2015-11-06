@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.preference.DialogPreference;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,11 +32,20 @@ public class MainActivity extends AppCompatActivity {
             setTaskDescription(new ActivityManager.TaskDescription("CS 61A", BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher), getResources().getColor(R.color.colorPrimary)));
             getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
         }
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.main_assignment_list);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.main_assignment_list);
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_assignment_list);
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimaryDark), getResources().getColor(R.color.colorPrimary), CardAdapter.releasedAssignmentBackgroundColor);
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        HTMLDownloader htmlDownloader = new HTMLDownloader("http://www.cs61a.org", recyclerView);
+        HTMLDownloader htmlDownloader = new HTMLDownloader(recyclerView, swipeRefreshLayout);
         htmlDownloader.execute();
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                HTMLDownloader reinstantiate = new HTMLDownloader(recyclerView, swipeRefreshLayout);
+                reinstantiate.execute();
+            }
+        });
     }
 
     @Override
