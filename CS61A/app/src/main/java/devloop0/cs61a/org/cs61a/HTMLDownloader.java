@@ -23,18 +23,17 @@ import java.util.Calendar;
  */
 public class HTMLDownloader extends AsyncTask {
     String sourceCode = null;
+    String url = "";
     RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
 
     public HTMLDownloader(RecyclerView rv, SwipeRefreshLayout srl) {
         sourceCode = "";
-        recyclerView = rv;
-        swipeRefreshLayout = srl;
+        this.url = url;
     }
 
-    private String grabHomePageSource() {
+     public String grabHomePageSource() {
         try {
-            String url = "http://www.cs61a.org";
             DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
             HttpGet request = new HttpGet(url);
             HttpResponse httpResponse = defaultHttpClient.execute(request);
