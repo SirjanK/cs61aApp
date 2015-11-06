@@ -83,6 +83,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 intent.putExtra("assignment_release_time", assignment.getReleaseTime());
                 intent.putExtra("assignment_due_time", assignment.getDueTime());
                 intent.putExtra("assignment_link", assignment.getAssignmentLink());
+                intent.putExtra("assignment_is_open", assignment.assignmentIsOpen());
                 v.getContext().startActivity(intent);
             }
         });

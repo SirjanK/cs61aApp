@@ -47,6 +47,7 @@ public class AssignmentActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String assignmentTitle = intent.getStringExtra("assignment_name");
         String assignmentDescription = intent.getStringExtra("assignment_description");
+        final boolean assignmentIsOpen = intent.getBooleanExtra("assignment_is_open", false);
         final long assignmentReleaseTime = intent.getLongExtra("assignment_release_time", 0);
         final long assignmentDueTime = intent.getLongExtra("assignment_due_time", 0);
         String assignmentLink = intent.getStringExtra("assignment_link");
@@ -78,7 +79,7 @@ public class AssignmentActivity extends AppCompatActivity {
                                     assignmentCountdown.setPercentage(100);
                                     tMinusCountdownTextView.setText(Html.fromHtml("<b>Assignment not released yet.</b>"));
                                 }
-                                else if(currentTime >= assignmentReleaseTime && currentTime <= assignmentDueTime) {
+                                else if(currentTime >= assignmentReleaseTime && currentTime <= assignmentDueTime && assignmentIsOpen) {
                                     long differenceTime = assignmentDueTime - currentTime;
                                     int days = (int) TimeUnit.MILLISECONDS.toDays(differenceTime);
                                     int hours = (int) TimeUnit.MILLISECONDS.toHours(differenceTime) - (days * 24);

@@ -27,6 +27,8 @@ public class HTMLDownloader extends AsyncTask {
     SwipeRefreshLayout swipeRefreshLayout;
 
     public HTMLDownloader(RecyclerView rv, SwipeRefreshLayout srl) {
+        recyclerView = rv;
+        swipeRefreshLayout = srl;
         sourceCode = "";
     }
 
@@ -70,10 +72,7 @@ public class HTMLDownloader extends AsyncTask {
             Log.i("Dictionary Parser", Arrays.toString(ar.get(i)));*/
 
         AssignmentListGenerator assignmentListGenerator = new AssignmentListGenerator(ar);
-        CardAdapter cardAdapter = new CardAdapter(assignmentListGenerator);
-        recyclerView.setAdapter(cardAdapter);
-        if (swipeRefreshLayout.isRefreshing()) {
-            swipeRefreshLayout.setRefreshing(false);
-        }
+        AssignmentListOpenCheck assignmentListOpenCheck = new AssignmentListOpenCheck(assignmentListGenerator, recyclerView, swipeRefreshLayout);
+        assignmentListOpenCheck.execute();
     }
 }
