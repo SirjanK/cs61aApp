@@ -54,7 +54,7 @@ public class AssignmentListGenerator {
             int first = -1;
             for(int i = 0; i < assignmentArrayList.size(); i++) {
                 Assignment assignment = assignmentArrayList.get(i);
-                if(assignment.getReleaseTime() > currentTimeInMilliseconds || assignment.getDueTime() < currentTimeInMilliseconds) {
+                if(assignment.getReleaseTime() >= currentTimeInMilliseconds && assignment.getDueTime() < currentTimeInMilliseconds) {
 
                 }
                 else if(assignment.getDueTime() > currentTimeInMilliseconds) {

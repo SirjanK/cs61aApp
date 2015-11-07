@@ -14,7 +14,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.text.style.StrikethroughSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -107,7 +110,10 @@ public class AssignmentActivity extends AppCompatActivity {
             }
         };
         t.start();
-        linkTextView.setText(Html.fromHtml("<b>Assignment Link:</b> <a href=\"" + assignmentLink + "\">" + assignmentLink + "</a>"));
+        if(!assignmentIsOpen)
+            linkTextView.setText(Html.fromHtml("<b>Unreleased Assignment Link:</b> " + assignmentLink));
+        else
+            linkTextView.setText(Html.fromHtml("<b>Assignment Link:</b> <a href=\"" + assignmentLink + "\">" + assignmentLink + "</a>"));
         linkTextView.setMovementMethod(LinkMovementMethod.getInstance());
         backgroundToolbar.inflateMenu(R.menu.menu);
         setSupportActionBar(backgroundToolbar);

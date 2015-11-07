@@ -25,11 +25,23 @@ public class HTMLDownloader extends AsyncTask {
     String sourceCode = "";
     RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
+    boolean background;
+    AssignmentListGenerator inaccurateAssignmentListGenerator;
+    CS61AService cs61AService;
 
     public HTMLDownloader(RecyclerView rv, SwipeRefreshLayout srl) {
         recyclerView = rv;
         swipeRefreshLayout = srl;
         sourceCode = "";
+        background = false;
+    }
+
+    public HTMLDownloader(CS61AService css, boolean b) {
+        recyclerView = null;
+        swipeRefreshLayout = null;
+        sourceCode = "";
+        background = b;
+        cs61AService = css;
     }
 
      public String grabHomePageSource() {
@@ -71,8 +83,18 @@ public class HTMLDownloader extends AsyncTask {
         /*for(int i=0; i<ar.size(); i++)
             Log.i("Dictionary Parser", Arrays.toString(ar.get(i)));*/
 
-        AssignmentListGenerator assignmentListGenerator = new AssignmentListGenerator(ar);
-        AssignmentListOpenCheck assignmentListOpenCheck = new AssignmentListOpenCheck(assignmentListGenerator, recyclerView, swipeRefreshLayout);
-        assignmentListOpenCheck.execute();
+        inaccurateAssignmentListGenerator = new AssignmentListGenerator(ar);
+        if(!background) {
+            AssignmentListOpenCheck assignmentListOpenCheck = new AssignmentListOpenCheck(inaccurateAssignmentListGenerator, recyclerView, swipeRefreshLayout);
+            assignmentListOpenCheck.execute();
+        }
+        else {
+            AssignmentListOpenCheck assignmentListOpenCheck = new AssignmentListOpenCheck(inaccurateAssignmentListGenerator, cs61AService, true);
+            assignmentListOpenCheck.execute();
+        }
+    }
+
+    public AssignmentListGenerator getInaccurateAssignmentListGenerator() {
+        return inaccurateAssignmentListGenerator;
     }
 }
