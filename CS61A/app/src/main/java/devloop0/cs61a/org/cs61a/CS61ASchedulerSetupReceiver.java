@@ -18,7 +18,6 @@ public class CS61ASchedulerSetupReceiver extends BroadcastReceiver {
         Intent in = new Intent(context, CS61ASchedulerEventReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, in, PendingIntent.FLAG_CANCEL_CURRENT);
         Calendar now = Calendar.getInstance();
-        now.add(Calendar.MINUTE, 1);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, now.getTimeInMillis(), 60 * 60 * 6 * 1000, pendingIntent);
     }
 }
