@@ -70,6 +70,7 @@ public class AssignmentListOpenCheck extends AsyncTask {
             for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
                 if (service.service.getClassName().equals(CS61AService.class.getName())) on = true;
             }
+            Log.i("CS61AService ON", on + "");
             if (!on) {
                 Intent info = new Intent(recyclerView.getContext(), CS61AService.class);
                 recyclerView.getContext().startService(info);

@@ -24,7 +24,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <service android:name=".CS61AService" android:process=":hascode_process" />
+        <service android:name=".CS61AService" android:process=":remote" />
         <receiver android:name=".CS61ASchedulerEventReceiver" android:process=":hascode_process" />
         <receiver android:name=".CS61ASchedulerSetupReceiver" android:process=":hascode_process">
             <intent-filter >
