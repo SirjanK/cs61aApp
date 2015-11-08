@@ -2,8 +2,11 @@ package devloop0.cs61a.org.cs61a;
 
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Build;
 import android.preference.DialogPreference;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -20,6 +23,8 @@ import com.parse.Parse;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
 
+import java.util.Collection;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -35,7 +40,13 @@ public class MainActivity extends AppCompatActivity {
         }
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.main_assignment_list);
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_assignment_list);
-        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimaryDark), getResources().getColor(R.color.colorPrimary), CardAdapter.releasedAssignmentBackgroundColor);
+        swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#F44336"), Color.parseColor("#3F51B5"), Color.parseColor("#FFC107"), Color.parseColor("#4CAF50"));
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(true);
+            }
+        });
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         HTMLDownloader htmlDownloader = new HTMLDownloader(recyclerView, swipeRefreshLayout);

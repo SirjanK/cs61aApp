@@ -60,15 +60,15 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         holder.assignmentDescription.setText(assignment.getDescription());
         holder.assignmentReleaseDate.setText(Html.fromHtml("<b>Release Date:</b> " + assignment.getFormattedReleaseDateString()));
         holder.assignmentDueDate.setText(Html.fromHtml("<b>Due Date:</b> " + assignment.getFormattedDueDateString()));
-        boolean urgent = assignment.getDueTime() - currentTimeInMilliseconds < twoDayLimit;
-        boolean complete = assignment.getDueTime() < currentTimeInMilliseconds;
         if(assignment.assignmentIsOpen()) {
-            if(complete)
-                colorToSet = completedAssignmentBackgroundColor;
-            else if(urgent)
-                colorToSet = urgentAssignmentBackgroundColor;
+            if(currentTimeInMilliseconds >= assignment.getReleaseTime() && currentTimeInMilliseconds < assignment.getDueTime()) {
+                if(currentTimeInMilliseconds + twoDayLimit >= assignment.getDueTime())
+                    colorToSet = urgentAssignmentBackgroundColor;
+                else
+                    colorToSet = releasedAssignmentBackgroundColor;
+            }
             else
-                colorToSet = releasedAssignmentBackgroundColor;
+                colorToSet = completedAssignmentBackgroundColor;
         }
         else {
             colorToSet = unreleasedAssignmentBackgroundColor;
@@ -83,6 +83,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 intent.putExtra("assignment_release_time", assignment.getReleaseTime());
                 intent.putExtra("assignment_due_time", assignment.getDueTime());
                 intent.putExtra("assignment_link", assignment.getAssignmentLink());
+                intent.putExtra("assignment_is_open", assignment.assignmentIsOpen());
                 v.getContext().startActivity(intent);
             }
         });
