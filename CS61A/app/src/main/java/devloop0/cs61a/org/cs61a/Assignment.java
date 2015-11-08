@@ -20,7 +20,7 @@ public class Assignment {
     String description;
     AssignmentKind assignmentKind;
     String assignmentLink;
-    boolean isOpen;
+    private boolean isOpen;
 
     public enum AssignmentKind {
         ASSIGNMENT_KIND_LAB, ASSIGNMENT_KIND_QUIZ, ASSIGNMENT_KIND_HOMEWORK, ASSIGNMENT_KIND_PROJECT, ASSIGNMENT_KIND_NONE
@@ -33,6 +33,16 @@ public class Assignment {
         description = d;
         assignmentKind = ak;
         assignmentLink = l;
+        isOpen = false;
+    }
+
+    public boolean setAssignmentIsOpen(boolean b) {
+        isOpen = b;
+        return isOpen;
+    }
+
+    public boolean assignmentIsOpen() {
+        return isOpen;
     }
 
     public String getAssignmentName() {

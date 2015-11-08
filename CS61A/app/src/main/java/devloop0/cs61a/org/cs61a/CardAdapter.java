@@ -15,8 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.ParsePush;
-
 import org.w3c.dom.Text;
 
 import java.io.IOException;
@@ -35,21 +33,16 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     ArrayList<Assignment> assignmentArrayList;
     long currentTimeInMilliseconds = -1;
     final long twoDayLimit = 24 * 3600 * 2 * 1000; // 2 days in milliseconds
-    final long twoHourLimit = 2 * 3600 * 1000; //2 hours in milliseconds
 
     public final static int releasedAssignmentBackgroundColor = Color.parseColor("#E6F3FF");
     public final static int urgentAssignmentBackgroundColor = Color.parseColor("#FFE6FF");
     public final static int completedAssignmentBackgroundColor = Color.parseColor("#E7FFE6");
     public final static int unreleasedAssignmentBackgroundColor = Color.parseColor("#EDEFF0");
 
-    ParsePush push;
-
     public CardAdapter(AssignmentListGenerator assignmentListGenerator) {
         super();
         assignmentArrayList = assignmentListGenerator.getAssignmentList();
         currentTimeInMilliseconds = Calendar.getInstance().getTimeInMillis();
-        push = new ParsePush();
-        ParsePush.subscribeInBackground("General");
     }
 
     @Override
@@ -63,23 +56,13 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Assignment assignment = assignmentArrayList.get(position);
         int colorToSet = unreleasedAssignmentBackgroundColor;
-
         holder.assignmentName.setText(assignment.getAssignmentName());
         holder.assignmentDescription.setText(assignment.getDescription());
         holder.assignmentReleaseDate.setText(Html.fromHtml("<b>Release Date:</b> " + assignment.getFormattedReleaseDateString()));
         holder.assignmentDueDate.setText(Html.fromHtml("<b>Due Date:</b> " + assignment.getFormattedDueDateString()));
-
         boolean urgent = assignment.getDueTime() - currentTimeInMilliseconds < twoDayLimit;
         boolean complete = assignment.getDueTime() < currentTimeInMilliseconds;
-        boolean superUrgent = assignment.getDueTime() - currentTimeInMilliseconds < twoHourLimit;
-
-        if(superUrgent) {
-            push.setChannel("General");
-            push.setMessage("Finish " + assignment.assignmentName + " Now!");
-            push.sendInBackground();
-        }
-
-        if(assignment.isOpen) {
+        if(assignment.assignmentIsOpen()) {
             if(complete)
                 colorToSet = completedAssignmentBackgroundColor;
             else if(urgent)
@@ -87,13 +70,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             else
                 colorToSet = releasedAssignmentBackgroundColor;
         }
-
         else {
             colorToSet = unreleasedAssignmentBackgroundColor;
         }
-
         holder.assignmentLinearLayout.setBackgroundColor(colorToSet);
-
         holder.assignmentLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
