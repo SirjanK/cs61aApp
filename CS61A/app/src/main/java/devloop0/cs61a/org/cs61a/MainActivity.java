@@ -14,9 +14,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.parse.Parse;
@@ -26,20 +30,36 @@ import com.parse.ParsePush;
 import java.util.Collection;
 
 public class MainActivity extends AppCompatActivity {
+    TextView searchText;
+    ImageButton searchButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Parse.initialize(this, "mEtmY7czfqvQffthH1JciErMFGD3Cmib6aNWJyzv", "j1lRCi9vcKA953eOK265TuMcvcF7lgJ3AOq90Hhu");
         ParseInstallation.getCurrentInstallation().saveInBackground();
+
         setContentView(R.layout.activity_main);
+
+        searchText = (TextView) findViewById(R.id.piazzaSearch);
+        searchButton = (ImageButton) findViewById(R.id.searchButton);
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchText.setText("Button Works Bruh");
+            }
+        });
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             setTaskDescription(new ActivityManager.TaskDescription("CS 61A", BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher), getResources().getColor(R.color.colorPrimary)));
             getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
         }
+
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.main_assignment_list);
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_assignment_list);
+
         swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#F44336"), Color.parseColor("#3F51B5"), Color.parseColor("#FFC107"), Color.parseColor("#4CAF50"));
         swipeRefreshLayout.post(new Runnable() {
             @Override
@@ -51,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         HTMLDownloader htmlDownloader = new HTMLDownloader(recyclerView, swipeRefreshLayout);
         htmlDownloader.execute();
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
