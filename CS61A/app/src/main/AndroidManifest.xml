@@ -40,7 +40,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SettingsActivity" />
+        <activity android:name=".SettingsActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".AssignmentActivity"
             android:label="@string/title_activity_assignment"

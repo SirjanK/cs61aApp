@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">CS61A</string>
+    <string name="app_name">CS 61A</string>
     <string name="title_activity_assignment">AssignmentActivity</string>
 </resources>

@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.preference.EditTextPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -18,7 +19,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 public class SettingsActivity extends AppCompatActivity {
-    boolean switchOn = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +30,6 @@ public class SettingsActivity extends AppCompatActivity {
             getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
         }
 
-        switchOn = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("notifications", true);
         PreferenceScreenFragment pref = new PreferenceScreenFragment();
         getFragmentManager().beginTransaction().replace(android.R.id.content, pref).commit();
     }
@@ -42,7 +41,12 @@ public class SettingsActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
             Preference pref = findPreference("restart");
-            Preference notificationsOn = findPreference("notifications");
+            boolean switchOn = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("notifications", true);
+            SwitchPreference notificationsOn = (SwitchPreference) findPreference("notifications");
+            notificationsOn.setChecked(switchOn);
+            String urgentString = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("urgency", "2 days");
+            ListPreference urgency = (ListPreference) findPreference("urgency");
+            urgency.setValue(urgentString);
             pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {

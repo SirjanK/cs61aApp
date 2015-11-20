@@ -14,7 +14,7 @@
             android:title="Notifications"
             android:key="notifications"/>
 
-        <Preference android:title="Restart App"
+        <Preference android:title="Restart App to See Changes"
             android:key="restart"/>
 
     </PreferenceCategory>

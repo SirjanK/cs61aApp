@@ -57,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         notify = preferences.getBoolean("notifications", true);
         String urgentString = preferences.getString("urgency", "2 days");
-        Log.i("BRUH", urgentString);
+        Log.i("AssignmentUrgency", urgentString);
+        Log.i("NotificationsOn", notify + "");
         urgency = convertToMillis(urgentString);
         final PreferenceHolder preferenceHolder = new PreferenceHolder(notify, urgency);
         imageButton = (ImageButton) findViewById(R.id.announcements);
@@ -129,6 +130,10 @@ public class MainActivity extends AppCompatActivity {
                 return scale;
             case "2 hours":
                 return scale * 2;
+            case "6 hours":
+                return scale * 6;
+            case "12 hours":
+                return scale * 12;
             case "1 day":
                 return scale * 24;
             default:
