@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="App Settings">
+
+        <EditTextPreference
+            android:title="Urgency of Assignments"
+            android:key="urgency"/>
+
+        <SwitchPreference
+            android:title="Notifications"
+            android:key="notifications"/>
+
+        <Preference android:title="Restart App"
+            android:key="restart"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

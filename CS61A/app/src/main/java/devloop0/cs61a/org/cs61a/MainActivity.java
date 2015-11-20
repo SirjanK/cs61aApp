@@ -5,10 +5,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.preference.DialogPreference;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,11 +33,13 @@ import java.util.Collection;
 
 public class MainActivity extends AppCompatActivity {
 
+    private SharedPreferences preferences;
+    private boolean notify;
+    private long urgency;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Parse.initialize(this, "mEtmY7czfqvQffthH1JciErMFGD3Cmib6aNWJyzv", "j1lRCi9vcKA953eOK265TuMcvcF7lgJ3AOq90Hhu");
-        ParseInstallation.getCurrentInstallation().saveInBackground();
 
         setContentView(R.layout.activity_main);
 
@@ -47,6 +51,13 @@ public class MainActivity extends AppCompatActivity {
 
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.main_assignment_list);
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_assignment_list);
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        notify = preferences.getBoolean("notifications", true);
+        long urgencyHours = Long.parseLong(preferences.getString("urgency", "48"));
+        urgency = urgencyHours * 3600 * 1000;
+        Log.i("NOTIFY", notify + "");
+        Log.i("HOURS", urgencyHours + "");
 
         swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#F44336"), Color.parseColor("#3F51B5"), Color.parseColor("#FFC107"), Color.parseColor("#4CAF50"));
         swipeRefreshLayout.post(new Runnable() {
@@ -92,6 +103,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }).show();
                 return true;
+            case R.id.settings:
+                Intent settingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(settingsIntent);
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
