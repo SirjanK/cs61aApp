@@ -33,7 +33,7 @@ public class CS61AService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         HTMLDownloader htmlDownloader = new HTMLDownloader(this, true);
         htmlDownloader.execute();
-        return Service.START_NOT_STICKY;
+        return Service.START_STICKY;
     }
 
     @Override
