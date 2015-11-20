@@ -4,9 +4,11 @@
     <PreferenceCategory
         android:title="App Settings">
 
-        <EditTextPreference
+        <ListPreference
             android:title="Urgency of Assignments"
-            android:key="urgency"/>
+            android:key="urgency"
+            android:entries="@array/services"
+            android:entryValues="@array/services"/>
 
         <SwitchPreference
             android:title="Notifications"

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="services">
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>1 day</item>
+        <item>2 days</item>
+    </string-array>
+</resources>

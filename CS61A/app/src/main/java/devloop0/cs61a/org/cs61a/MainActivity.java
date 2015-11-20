@@ -56,10 +56,9 @@ public class MainActivity extends AppCompatActivity {
 
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         notify = preferences.getBoolean("notifications", true);
-        long urgencyHours = Long.parseLong(preferences.getString("urgency", "48"));
-        urgency = urgencyHours * 3600 * 1000;
-        Log.i("NOTIFY", notify + "");
-        Log.i("HOURS", urgencyHours + "");
+        String urgentString = preferences.getString("urgency", "2 days");
+        Log.i("BRUH", urgentString);
+        urgency = convertToMillis(urgentString);
         final PreferenceHolder preferenceHolder = new PreferenceHolder(notify, urgency);
         imageButton = (ImageButton) findViewById(R.id.announcements);
 
@@ -120,6 +119,20 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(settingsIntent);
             default:
                 return super.onOptionsItemSelected(menuItem);
+        }
+    }
+
+    public long convertToMillis(String time) {
+        long scale = 3600 * 1000;
+        switch(time) {
+            case "1 hour":
+                return scale;
+            case "2 hours":
+                return scale * 2;
+            case "1 day":
+                return scale * 24;
+            default:
+                return scale * 48;
         }
     }
 }
