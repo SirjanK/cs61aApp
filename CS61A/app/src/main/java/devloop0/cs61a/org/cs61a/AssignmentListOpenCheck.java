@@ -23,20 +23,23 @@ public class AssignmentListOpenCheck extends AsyncTask {
     SwipeRefreshLayout swipeRefreshLayout;
     CS61AService cs61AService;
     boolean background;
+    PreferenceHolder preferenceHolder;
 
-    public AssignmentListOpenCheck(AssignmentListGenerator alg, RecyclerView rv, SwipeRefreshLayout srl) {
+    public AssignmentListOpenCheck(AssignmentListGenerator alg, RecyclerView rv, SwipeRefreshLayout srl, PreferenceHolder ph) {
         assignmentListGenerator = alg;
         recyclerView = rv;
         swipeRefreshLayout = srl;
         background = false;
+        preferenceHolder = ph;
     }
 
-    public AssignmentListOpenCheck(AssignmentListGenerator alg, CS61AService css, boolean b) {
+    public AssignmentListOpenCheck(AssignmentListGenerator alg, CS61AService css, boolean b, PreferenceHolder ph) {
         assignmentListGenerator = alg;
         recyclerView = null;
         swipeRefreshLayout = null;
         background = b;
         cs61AService = css;
+        preferenceHolder = ph;
     }
 
     @Override
@@ -60,23 +63,32 @@ public class AssignmentListOpenCheck extends AsyncTask {
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
         if (!background) {
-            CardAdapter cardAdapter = new CardAdapter(assignmentListGenerator);
+            CardAdapter cardAdapter = new CardAdapter(assignmentListGenerator, preferenceHolder);
             recyclerView.setAdapter(cardAdapter);
             if (swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);
             }
-            ActivityManager manager = (ActivityManager) recyclerView.getContext().getSystemService(Context.ACTIVITY_SERVICE);
-            boolean on = false;
-            for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-                if (service.service.getClassName().equals(CS61AService.class.getName())) on = true;
+            if(preferenceHolder.getNotificationsOn()) {
+                ActivityManager manager = (ActivityManager) recyclerView.getContext().getSystemService(Context.ACTIVITY_SERVICE);
+                boolean on = false;
+                for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+                    if (service.service.getClassName().equals(CS61AService.class.getName()))
+                        on = true;
+                }
+                Log.i("CS61AService ON", on + "");
+                if (!on) {
+                    Intent info = new Intent(recyclerView.getContext(), CS61AService.class);
+                    recyclerView.getContext().startService(info);
+                }
             }
-            Log.i("CS61AService ON", on + "");
-            if (!on) {
-                Intent info = new Intent(recyclerView.getContext(), CS61AService.class);
-                recyclerView.getContext().startService(info);
+            else {
+                recyclerView.getContext().stopService(new Intent(recyclerView.getContext(), CS61AService.class));
+                recyclerView.getContext().stopService(new Intent(recyclerView.getContext(), CS61ASchedulerEventReceiver.class));
+                recyclerView.getContext().stopService(new Intent(recyclerView.getContext(), CS61ASchedulerSetupReceiver.class));
             }
         }
         else {
+
             long currentTimeInMilliseconds = Calendar.getInstance().getTimeInMillis();
             long twoDayLimit = 60 * 60 * 24 * 2 * 1000;
             long sixHours = 60 * 60 * 2 * 1000;

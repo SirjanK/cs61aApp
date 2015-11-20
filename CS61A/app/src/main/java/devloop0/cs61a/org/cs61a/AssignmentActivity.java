@@ -142,6 +142,9 @@ public class AssignmentActivity extends AppCompatActivity {
                     }
                 }).show();
                 return true;
+            case R.id.settings:
+                Intent settingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(settingsIntent);
             default:
                 return super.onOptionsItemSelected(menuItem);
         }

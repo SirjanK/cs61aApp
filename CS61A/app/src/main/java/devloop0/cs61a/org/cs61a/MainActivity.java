@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.preference.DialogPreference;
 import android.preference.PreferenceManager;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences preferences;
     private boolean notify;
     private long urgency;
+    ImageButton imageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         urgency = urgencyHours * 3600 * 1000;
         Log.i("NOTIFY", notify + "");
         Log.i("HOURS", urgencyHours + "");
+        final PreferenceHolder preferenceHolder = new PreferenceHolder(notify, urgency);
+        imageButton = (ImageButton) findViewById(R.id.announcements);
 
         swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#F44336"), Color.parseColor("#3F51B5"), Color.parseColor("#FFC107"), Color.parseColor("#4CAF50"));
         swipeRefreshLayout.post(new Runnable() {
@@ -68,14 +72,22 @@ public class MainActivity extends AppCompatActivity {
         });
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        HTMLDownloader htmlDownloader = new HTMLDownloader(recyclerView, swipeRefreshLayout);
+        HTMLDownloader htmlDownloader = new HTMLDownloader(recyclerView, swipeRefreshLayout, preferenceHolder);
         htmlDownloader.execute();
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                HTMLDownloader reinstantiate = new HTMLDownloader(recyclerView, swipeRefreshLayout);
+                HTMLDownloader reinstantiate = new HTMLDownloader(recyclerView, swipeRefreshLayout, preferenceHolder);
                 reinstantiate.execute();
+            }
+        });
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.denero);
+                mediaPlayer.start();
             }
         });
     }

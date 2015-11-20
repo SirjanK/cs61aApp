@@ -5,12 +5,11 @@ package devloop0.cs61a.org.cs61a;
  */
 public class PreferenceHolder {
     boolean notificationsOn;
-    long assignmentUrgencyThreshold, notificationRefreshFrequency;
+    long assignmentUrgencyThreshold;
 
-    public PreferenceHolder(boolean n, long aut, long nrf) {
+    public PreferenceHolder(boolean n, long aut) {
         notificationsOn = n;
         assignmentUrgencyThreshold = aut;
-        notificationRefreshFrequency = nrf;
     }
 
     public boolean getNotificationsOn() {
@@ -19,9 +18,5 @@ public class PreferenceHolder {
 
     public long getAssignmentUrgencyThreshold() {
         return assignmentUrgencyThreshold;
-    }
-
-    public long getNotificationRefreshFrequency() {
-        return notificationRefreshFrequency;
     }
 }

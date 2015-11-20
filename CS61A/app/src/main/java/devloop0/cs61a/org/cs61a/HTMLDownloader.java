@@ -28,20 +28,23 @@ public class HTMLDownloader extends AsyncTask {
     boolean background;
     AssignmentListGenerator inaccurateAssignmentListGenerator;
     CS61AService cs61AService;
+    PreferenceHolder preferenceHolder;
 
-    public HTMLDownloader(RecyclerView rv, SwipeRefreshLayout srl) {
+    public HTMLDownloader(RecyclerView rv, SwipeRefreshLayout srl, PreferenceHolder ph) {
         recyclerView = rv;
         swipeRefreshLayout = srl;
         sourceCode = "";
         background = false;
+        preferenceHolder = ph;
     }
 
-    public HTMLDownloader(CS61AService css, boolean b) {
+    public HTMLDownloader(CS61AService css, boolean b, PreferenceHolder ph) {
         recyclerView = null;
         swipeRefreshLayout = null;
         sourceCode = "";
         background = b;
         cs61AService = css;
+        preferenceHolder = ph;
     }
 
      public String grabHomePageSource() {
@@ -85,11 +88,11 @@ public class HTMLDownloader extends AsyncTask {
 
         inaccurateAssignmentListGenerator = new AssignmentListGenerator(ar);
         if(!background) {
-            AssignmentListOpenCheck assignmentListOpenCheck = new AssignmentListOpenCheck(inaccurateAssignmentListGenerator, recyclerView, swipeRefreshLayout);
+            AssignmentListOpenCheck assignmentListOpenCheck = new AssignmentListOpenCheck(inaccurateAssignmentListGenerator, recyclerView, swipeRefreshLayout, preferenceHolder);
             assignmentListOpenCheck.execute();
         }
         else {
-            AssignmentListOpenCheck assignmentListOpenCheck = new AssignmentListOpenCheck(inaccurateAssignmentListGenerator, cs61AService, true);
+            AssignmentListOpenCheck assignmentListOpenCheck = new AssignmentListOpenCheck(inaccurateAssignmentListGenerator, cs61AService, true, preferenceHolder);
             assignmentListOpenCheck.execute();
         }
     }

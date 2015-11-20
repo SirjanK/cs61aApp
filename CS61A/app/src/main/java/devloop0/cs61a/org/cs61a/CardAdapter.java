@@ -32,17 +32,18 @@ import java.util.Calendar;
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     ArrayList<Assignment> assignmentArrayList;
     long currentTimeInMilliseconds = -1;
-    final long twoDayLimit = 24 * 3600 * 2 * 1000; // 2 days in milliseconds
+    PreferenceHolder preferenceHolder;
 
     public final static int releasedAssignmentBackgroundColor = Color.parseColor("#E6F3FF");
     public final static int urgentAssignmentBackgroundColor = Color.parseColor("#FFE6FF");
     public final static int completedAssignmentBackgroundColor = Color.parseColor("#E7FFE6");
     public final static int unreleasedAssignmentBackgroundColor = Color.parseColor("#EDEFF0");
 
-    public CardAdapter(AssignmentListGenerator assignmentListGenerator) {
+    public CardAdapter(AssignmentListGenerator assignmentListGenerator, PreferenceHolder ph) {
         super();
         assignmentArrayList = assignmentListGenerator.getAssignmentList();
         currentTimeInMilliseconds = Calendar.getInstance().getTimeInMillis();
+        preferenceHolder = ph;
     }
 
     @Override
@@ -62,7 +63,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         holder.assignmentDueDate.setText(Html.fromHtml("<b>Due Date:</b> " + assignment.getFormattedDueDateString()));
         if(assignment.assignmentIsOpen()) {
             if(currentTimeInMilliseconds >= assignment.getReleaseTime() && currentTimeInMilliseconds < assignment.getDueTime()) {
-                if(currentTimeInMilliseconds + twoDayLimit >= assignment.getDueTime())
+                if(currentTimeInMilliseconds + preferenceHolder.getAssignmentUrgencyThreshold() >= assignment.getDueTime())
                     colorToSet = urgentAssignmentBackgroundColor;
                 else
                     colorToSet = releasedAssignmentBackgroundColor;
