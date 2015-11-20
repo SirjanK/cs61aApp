@@ -30,8 +30,6 @@ import com.parse.ParsePush;
 import java.util.Collection;
 
 public class MainActivity extends AppCompatActivity {
-    TextView searchText;
-    ImageButton searchButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,16 +38,6 @@ public class MainActivity extends AppCompatActivity {
         ParseInstallation.getCurrentInstallation().saveInBackground();
 
         setContentView(R.layout.activity_main);
-
-        searchText = (TextView) findViewById(R.id.piazzaSearch);
-        searchButton = (ImageButton) findViewById(R.id.searchButton);
-
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchText.setText("Button Works Bruh");
-            }
-        });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));

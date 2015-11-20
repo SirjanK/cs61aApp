@@ -5,6 +5,10 @@ android {
     buildToolsVersion "23.0.1"
     useLibrary 'org.apache.http.legacy'
 
+    repositories {
+        maven { url "https://bintray.com/algolia/maven/algoliasearch-client-android/view" }
+    }
+
     defaultConfig {
         applicationId "devloop0.cs61a.org.cs61a"
         minSdkVersion 19
@@ -29,6 +33,4 @@ dependencies {
     compile 'com.android.support:design:23.1.0'
     compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.parse:parse-android:1.+'
-    //compile 'com.algolia:algoliasearch-android:2.4.0'
-    //compile 'com.algolia:algoliasearch:1.6.0'
 }
