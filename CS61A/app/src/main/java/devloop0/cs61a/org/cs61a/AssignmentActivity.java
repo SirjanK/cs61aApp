@@ -76,7 +76,7 @@ public class AssignmentActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 long currentTime = Calendar.getInstance().getTimeInMillis();
-                                if(currentTime < assignmentReleaseTime) {
+                                if(currentTime < assignmentReleaseTime || !assignmentIsOpen) {
                                     assignmentCountdown.doneColor = green;
                                     assignmentCountdown.leftColor = green;
                                     assignmentCountdown.setPercentage(100);
