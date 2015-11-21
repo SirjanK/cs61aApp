@@ -9,4 +9,8 @@
         android:id="@+id/app_credits"
         android:title="Credits"
         cs61a:showAsAction="never"/>
+    <item
+        android:id="@+id/email"
+        android:title="Feedback"
+        cs61a:showAsAction="never"/>
 </menu>

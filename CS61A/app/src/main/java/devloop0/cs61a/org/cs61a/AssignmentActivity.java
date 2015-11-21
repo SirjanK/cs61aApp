@@ -145,6 +145,15 @@ public class AssignmentActivity extends AppCompatActivity {
             case R.id.settings:
                 Intent settingsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
                 startActivity(settingsIntent);
+                return true;
+            case R.id.email:
+                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                emailIntent.setType("text/plain");
+                String[] toSendTo = { "cs61a.app@gmail.com" };
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, toSendTo);
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "CS 61A App Feedback");
+                startActivity(Intent.createChooser(emailIntent, "Send Feedback"));
+                return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
