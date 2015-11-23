@@ -4,13 +4,11 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
     useLibrary 'org.apache.http.legacy'
-
     repositories {
         maven { url "https://bintray.com/algolia/maven/algoliasearch-client-android/view" }
     }
-
     defaultConfig {
-        applicationId "devloop0.cs61a.org.cs61a"
+        applicationId 'org.cs61a.devloop0'
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 1
@@ -21,6 +19,8 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    productFlavors {
     }
 }
 
