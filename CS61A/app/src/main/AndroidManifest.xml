@@ -3,7 +3,6 @@
     package="devloop0.cs61a.org.cs61a" >
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -17,10 +16,9 @@
     <permission android:protectionLevel="signature"
         android:name=".permission.C2D_MESSAGE" />
     <uses-permission android:name="devloop0.cs61a.org.cs61a.permission.C2D_MESSAGE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
