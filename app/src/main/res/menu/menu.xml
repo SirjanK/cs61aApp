@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cs61a="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:title="Settings"
+        android:id="@+id/settings"/>
+    <item
+        android:id="@+id/app_credits"
+        android:title="Credits"
+        cs61a:showAsAction="never"/>
+    <item
+        android:id="@+id/email"
+        android:title="Feedback"
+        cs61a:showAsAction="never"/>
+</menu>
