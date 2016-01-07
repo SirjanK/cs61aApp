@@ -63,6 +63,7 @@ public class HTMLDownloader extends AsyncTask {
             Log.i("SOURCE", sourceCode);
         } catch (IOException io) {
             Log.e("Download failed", io.getMessage());
+            // TODO: Notify the user there is not internet.
         }
         return sourceCode;
     }

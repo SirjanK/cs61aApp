@@ -1,6 +1,7 @@
 package devloop0.cs61a.org.cs61a;
 
 import android.content.Intent;
+import android.util.Log;
 
 import java.util.*;
 
@@ -17,6 +18,7 @@ public class DictionaryParser
     public DictionaryParser(String sc)
     {
         srcCode = sc;
+        Log.i("source", srcCode.substring(10));
         assignments = new ArrayList<String[]>();
 
         String dict = findDict();

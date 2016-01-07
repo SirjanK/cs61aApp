@@ -33,8 +33,8 @@ public class AssignmentListGenerator {
             for (String[] data : assignmentDataList) {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yy");
                 assignmentArrayList.add(new Assignment(data[0], simpleDateFormat.parse(data[1]).getTime(), simpleDateFormat.parse(data[2]).getTime() + dayMinusOneMinute, data[3], data[4],
-                        (data[5] == "Lab" ? Assignment.AssignmentKind.ASSIGNMENT_KIND_LAB : (data[5] == "Homework" ? Assignment.AssignmentKind.ASSIGNMENT_KIND_HOMEWORK :
-                                (data[5] == "Quiz" ? Assignment.AssignmentKind.ASSIGNMENT_KIND_QUIZ : (data[5] == "Project" ? Assignment.AssignmentKind.ASSIGNMENT_KIND_PROJECT : Assignment.AssignmentKind.ASSIGNMENT_KIND_NONE))))));
+                        (data[5].equals("Lab") ? Assignment.AssignmentKind.ASSIGNMENT_KIND_LAB : (data[5].equals("Homework") ? Assignment.AssignmentKind.ASSIGNMENT_KIND_HOMEWORK :
+                                (data[5].equals("Quiz") ? Assignment.AssignmentKind.ASSIGNMENT_KIND_QUIZ : (data[5].equals("Project") ? Assignment.AssignmentKind.ASSIGNMENT_KIND_PROJECT : Assignment.AssignmentKind.ASSIGNMENT_KIND_NONE))))));
             }
             Collections.sort(assignmentArrayList, new Comparator<Assignment>() {
                 @Override
@@ -50,12 +50,13 @@ public class AssignmentListGenerator {
                     }
                 }
             });
+
             long currentTimeInMilliseconds = Calendar.getInstance().getTimeInMillis();
             int first = -1;
             for(int i = 0; i < assignmentArrayList.size(); i++) {
                 Assignment assignment = assignmentArrayList.get(i);
                 if(assignment.getReleaseTime() >= currentTimeInMilliseconds && assignment.getDueTime() < currentTimeInMilliseconds) {
-
+                    first = i;
                 }
                 else if(assignment.getDueTime() > currentTimeInMilliseconds) {
                     if(first == -1) {
@@ -64,6 +65,8 @@ public class AssignmentListGenerator {
                     }
                 }
             }
+            if(first == -1)
+                first = assignmentArrayList.size() - 1;
             ArrayList<Assignment> end = new ArrayList<Assignment>(assignmentArrayList.subList(0, first));
             ArrayList<Assignment> begin = new ArrayList<Assignment>(assignmentArrayList.subList(first, assignmentArrayList.size()));
             assignmentArrayList.clear();
