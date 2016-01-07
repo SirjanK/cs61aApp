@@ -75,13 +75,11 @@ public class MainActivity extends AppCompatActivity {
 
         HTMLDownloader htmlDownloader = new HTMLDownloader(recyclerView, swipeRefreshLayout, preferenceHolder);
 
-        try {
+        //try {
             htmlDownloader.grabHomePageSource();
             htmlDownloader.execute();
-            Log.i("TESTTTTT", "This shouldnt show");
-        }
-        catch(RuntimeException r) {
-            Log.i("TEST222", "THIS should show");
+        //}
+        //catch(RuntimeException r) {
             new AlertDialog.Builder(this).setTitle("Connection Error").setMessage(
                     "There seems to be a connection error with the course website \n" +
                             "Please check your internet and try again."
@@ -91,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                     }
                 }).show();
-        }
+        //}
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
