@@ -1,5 +1,7 @@
 package devloop0.cs61a.org.cs61a;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -29,7 +31,7 @@ public class HTMLDownloader extends AsyncTask {
     AssignmentListGenerator inaccurateAssignmentListGenerator;
     CS61AService cs61AService;
     PreferenceHolder preferenceHolder;
-
+    public static final String CONNECTIONERROR = "CONNECTION ERROR FOR COURSE WEBSITE";
     public HTMLDownloader(RecyclerView rv, SwipeRefreshLayout srl, PreferenceHolder ph) {
         recyclerView = rv;
         swipeRefreshLayout = srl;
@@ -64,6 +66,18 @@ public class HTMLDownloader extends AsyncTask {
         } catch (IOException io) {
             Log.e("Download failed", io.getMessage());
             // TODO: Notify the user there is not internet.
+
+            throw new RuntimeException(CONNECTIONERROR);
+
+            /*new AlertDialog.Builder(this).setTitle("Connection Error").setMessage(
+                    "There seems to be a connection error with the course website \n" +
+                            "Please check your internet and try again."
+                ).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).show(); */
         }
         return sourceCode;
     }

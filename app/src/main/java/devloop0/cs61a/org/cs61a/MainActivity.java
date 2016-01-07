@@ -72,8 +72,26 @@ public class MainActivity extends AppCompatActivity {
         });
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         HTMLDownloader htmlDownloader = new HTMLDownloader(recyclerView, swipeRefreshLayout, preferenceHolder);
-        htmlDownloader.execute();
+
+        try {
+            htmlDownloader.grabHomePageSource();
+            htmlDownloader.execute();
+            Log.i("TESTTTTT", "This shouldnt show");
+        }
+        catch(RuntimeException r) {
+            Log.i("TEST222", "THIS should show");
+            new AlertDialog.Builder(this).setTitle("Connection Error").setMessage(
+                    "There seems to be a connection error with the course website \n" +
+                            "Please check your internet and try again."
+                ).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                }).show();
+        }
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
