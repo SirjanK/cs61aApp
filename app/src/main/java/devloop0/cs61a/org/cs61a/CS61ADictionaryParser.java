@@ -58,19 +58,19 @@ public class CS61ADictionaryParser extends DictionaryParser
 
     public String generateAssignmentUrl(String postProcessedName, String type) {
         String prefix = "http://www.cs61a.org/";
-        if(type == "Homework") {
+        if(type.equals("Homework")) {
             String number = postProcessedName.substring(postProcessedName.indexOf(" ")).trim();
             return prefix + "hw/hw" + (number.length() == 1 ? "0" + number : number) + "/";
         }
-        else if(type == "Quiz") {
+        else if(type.equals("Quiz")) {
             String number = postProcessedName.substring(postProcessedName.indexOf(" ")).trim();
             return prefix + "quiz/quiz" + (number.length() == 1 ? "0" + number : number) + "/";
         }
-        else if(type == "Project") {
+        else if(type.equals("Project")) {
             String project_name = postProcessedName.trim().toLowerCase().replaceAll(" ", "_");
             return prefix + "proj/" + project_name + "/";
         }
-        else if(type == "Lab") {
+        else if(type.equals("Lab")) {
             String number = postProcessedName.substring(postProcessedName.indexOf(" ")).trim();
             return prefix + "lab/lab" + (number.length() == 1 ? "0" + number : number) + "/";
         }
@@ -101,23 +101,23 @@ public class CS61ADictionaryParser extends DictionaryParser
     }
 
     private String postProcessName(String name, String type) {
-        if(type == "Lab") {
+        if(type.equals("Lab")) {
             return name.substring(0, name.indexOf(":"));
         }
         return name;
     }
 
     private String getDescription(String name, String type) {
-        if(type == "Homework") {
+        if(type.equals("Homework")) {
             return "Homework Assignment";
         }
-        else if(type == "Quiz") {
+        else if(type.equals("Quiz")) {
             return "Quiz Assignment";
         }
-        else if(type == "Project") {
+        else if(type.equals("Project")) {
             return "Project Assignment";
         }
-        else if(type == "Lab") {
+        else if(type.equals("Lab")) {
             return name.substring(name.indexOf(":") + 1).trim();
         }
         return "";
@@ -134,21 +134,6 @@ public class CS61ADictionaryParser extends DictionaryParser
             return "Quiz";
         else
             return "Project";
-    }
-
-    private String processDate(String date) {
-        int firstSlash = date.indexOf('/');
-        if (date.substring(0, firstSlash).length() == 1) {
-            date = "0" + date;
-            firstSlash++;
-        }
-
-        int secondSlash = date.indexOf('/');
-
-        if (date.substring(firstSlash, secondSlash).length() == 1)
-            date = date.substring(0, firstSlash + 1) + "0" + date.substring(secondSlash - 1);
-
-        return date;
     }
 
     private int[] getImportantIndices(String dict) {
