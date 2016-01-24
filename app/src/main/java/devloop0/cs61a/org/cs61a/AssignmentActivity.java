@@ -4,13 +4,17 @@ import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -23,6 +27,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -54,12 +62,6 @@ public class AssignmentActivity extends AppCompatActivity {
         final long assignmentReleaseTime = intent.getLongExtra("assignment_release_time", 0);
         final long assignmentDueTime = intent.getLongExtra("assignment_due_time", 0);
         String assignmentLink = intent.getStringExtra("assignment_link");
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
-            setTaskDescription(new ActivityManager.TaskDescription(assignmentTitle, BitmapFactory.decodeResource(getResources(), R.drawable.icon), getResources().getColor(R.color.colorPrimary)));
-            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
-        }
         toolbar.setTitle(assignmentTitle);
         descriptionTextView.setText(assignmentDescription);
         releaseDateTextView.setText(Html.fromHtml("<b>Release Date:</b> " + new SimpleDateFormat("MM/dd/yy").format(new Date(assignmentReleaseTime))));
@@ -116,7 +118,60 @@ public class AssignmentActivity extends AppCompatActivity {
             linkTextView.setText(Html.fromHtml("<b>Assignment Link:</b> <a href=\"" + assignmentLink + "\">" + assignmentLink + "</a>"));
         linkTextView.setMovementMethod(LinkMovementMethod.getInstance());
         backgroundToolbar.inflateMenu(R.menu.menu);
+        backgroundToolbar.setTitle("");
         setSupportActionBar(backgroundToolbar);
+
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        String currentClass = preferences.getString("class", "cs61a");
+        String title = (currentClass.equals("cs61a") ? "CS 61A" : (currentClass.equals("cs61b") ? "CS 61B" : ""));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+            setTaskDescription(new ActivityManager.TaskDescription(title, BitmapFactory.decodeResource(getResources(), R.drawable.icon), getResources().getColor(R.color.colorPrimary)));
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
+        ListView mainClassList = (ListView) findViewById(R.id.main_class_list);
+        String[] test = { "CS 61A", "CS 61B" };
+        mainClassList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, test));
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, backgroundToolbar, R.string.navigation_drawer_opened, R.string.navigation_drawer_closed) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                invalidateOptionsMenu();
+            }
+        };
+        backgroundToolbar.inflateMenu(R.menu.menu);
+        setSupportActionBar(backgroundToolbar);
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+        final SharedPreferences.Editor editor = preferences.edit();
+        mainClassList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch(position) {
+                    case 0: {
+                        editor.putString("class", "cs61a");
+                        editor.commit();
+                    }
+                    break;
+                    case 1: {
+                        editor.putString("class", "cs61b");
+                        editor.commit();
+                    }
+                    break;
+                }
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        actionBarDrawerToggle.syncState();
    }
 
     @Override

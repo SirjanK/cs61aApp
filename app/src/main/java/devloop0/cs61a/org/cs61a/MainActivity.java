@@ -12,7 +12,10 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.preference.DialogPreference;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,9 +25,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
 
 import com.parse.Parse;
 import com.parse.ParseInstallation;
@@ -34,7 +42,6 @@ import java.util.Collection;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SharedPreferences preferences;
     private boolean notify;
     private long urgency;
     ImageButton imageButton;
@@ -45,22 +52,28 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
-            setTaskDescription(new ActivityManager.TaskDescription("CS 61A", BitmapFactory.decodeResource(getResources(), R.drawable.icon), getResources().getColor(R.color.colorPrimary)));
-            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
-        }
-
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.main_assignment_list);
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_assignment_list);
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        final Toolbar toolBar = (Toolbar) findViewById(R.id.main_toolbar);
+
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        String currentClass = preferences.getString("class", "cs61a");
+        String title = (currentClass.equals("cs61a") ? "CS 61A" : (currentClass.equals("cs61b") ? "CS 61B" : ""));
+        toolBar.setTitle(title);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+            setTaskDescription(new ActivityManager.TaskDescription(title, BitmapFactory.decodeResource(getResources(), R.drawable.icon), getResources().getColor(R.color.colorPrimary)));
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
         notify = preferences.getBoolean("notifications", true);
         String urgentString = preferences.getString("urgency", "2 days");
         Log.i("AssignmentUrgency", urgentString);
         Log.i("NotificationsOn", notify + "");
         urgency = convertToMillis(urgentString);
-        final PreferenceHolder preferenceHolder = new PreferenceHolder(notify, urgency);
+        final PreferenceHolder preferenceHolder = new PreferenceHolder(notify, urgency, currentClass);
         imageButton = (ImageButton) findViewById(R.id.announcements);
 
         swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#F44336"), Color.parseColor("#3F51B5"), Color.parseColor("#FFC107"), Color.parseColor("#4CAF50"));
@@ -87,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
                     }
-                }).show();
+            }).show();
         }
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -96,8 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     HTMLDownloader reinstantiate = new HTMLDownloader(recyclerView, swipeRefreshLayout, preferenceHolder);
                     reinstantiate.execute();
-                }
-                catch(RuntimeException r) {
+                } catch (RuntimeException r) {
                     new AlertDialog.Builder(getApplicationContext()).setTitle("Connection Error").setMessage(
                             "There seems to be a connection error with the course website \n" +
                                     "Please check your internet and try again."
@@ -118,6 +130,48 @@ public class MainActivity extends AppCompatActivity {
                 mediaPlayer.start();
             }
         });
+
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
+        ListView mainClassList = (ListView) findViewById(R.id.main_class_list);
+        String[] test = { "CS 61A", "CS 61B" };
+        mainClassList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, test));
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar, R.string.navigation_drawer_opened, R.string.navigation_drawer_closed) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                invalidateOptionsMenu();
+            }
+        };
+        toolBar.inflateMenu(R.menu.menu);
+        setSupportActionBar(toolBar);
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+        final SharedPreferences.Editor editor = preferences.edit();
+        mainClassList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch(position) {
+                    case 0: {
+                        editor.putString("class", "cs61a");
+                        editor.commit();
+                    }
+                    break;
+                    case 1: {
+                        editor.putString("class", "cs61b");
+                        editor.commit();
+                    }
+                    break;
+                }
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        actionBarDrawerToggle.syncState();
     }
 
     @Override

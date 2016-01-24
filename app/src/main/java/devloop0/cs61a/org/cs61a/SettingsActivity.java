@@ -17,6 +17,7 @@ import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 public class SettingsActivity extends AppCompatActivity {
     @Override
@@ -26,12 +27,13 @@ public class SettingsActivity extends AppCompatActivity {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
-            setTaskDescription(new ActivityManager.TaskDescription("CS 61A", BitmapFactory.decodeResource(getResources(), R.drawable.icon), getResources().getColor(R.color.colorPrimary)));
+            setTaskDescription(new ActivityManager.TaskDescription("Settings", BitmapFactory.decodeResource(getResources(), R.drawable.icon), getResources().getColor(R.color.colorPrimary)));
             getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
         }
 
         PreferenceScreenFragment pref = new PreferenceScreenFragment();
         getFragmentManager().beginTransaction().replace(android.R.id.content, pref).commit();
+        setTitle("Settings");
     }
 
     public static class PreferenceScreenFragment extends PreferenceFragment{

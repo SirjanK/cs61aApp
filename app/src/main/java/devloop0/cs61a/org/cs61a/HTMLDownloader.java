@@ -49,7 +49,7 @@ public class HTMLDownloader extends AsyncTask {
         preferenceHolder = ph;
     }
 
-     public String grabHomePageSource() {
+     private String grabHomePageSource() {
         try {
             DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
             HttpGet request = new HttpGet("http://www.cs61a.org/");
@@ -95,7 +95,12 @@ public class HTMLDownloader extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
-        CS61ADictionaryParser par = new CS61ADictionaryParser(sourceCode);
+        CS61ADictionaryParser par = null;
+        String curr = preferenceHolder.getCurrentClass();
+        if(curr.equals("cs61a"))
+            par = new CS61ADictionaryParser(sourceCode);
+        else if(curr.equals("cs61b"))
+            par = new CS61ADictionaryParser(sourceCode);
         ArrayList<String[]> ar = par.getAssignments();
 
         /*for(int i=0; i<ar.size(); i++)

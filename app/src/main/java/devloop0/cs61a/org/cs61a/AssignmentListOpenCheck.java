@@ -77,7 +77,7 @@ public class AssignmentListOpenCheck extends AsyncTask {
                 }
                 Log.i("CS61AService ON", on + "");
                 if (!on) {
-                    Intent info = new Intent(recyclerView.getContext(), CS61AService.class);
+                    Intent info = new Intent (recyclerView.getContext(), CS61AService.class);
                     recyclerView.getContext().startService(info);
                 }
             }

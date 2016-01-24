@@ -11,6 +11,7 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.os.AsyncTask;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -31,7 +32,7 @@ public class CS61AService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        HTMLDownloader htmlDownloader = new HTMLDownloader(this, true, new PreferenceHolder(true, 2 * 24 * 60 * 60 * 1000));
+        HTMLDownloader htmlDownloader = new HTMLDownloader(this, true, new PreferenceHolder(true, 2 * 24 * 60 * 60 * 1000, PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("class", "cs61a")));
         htmlDownloader.execute();
         return Service.START_STICKY;
     }

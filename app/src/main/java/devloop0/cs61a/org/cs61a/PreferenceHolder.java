@@ -6,10 +6,12 @@ package devloop0.cs61a.org.cs61a;
 public class PreferenceHolder {
     boolean notificationsOn;
     long assignmentUrgencyThreshold;
+    String currentClass;
 
-    public PreferenceHolder(boolean n, long aut) {
+    public PreferenceHolder(boolean n, long aut, String c) {
         notificationsOn = n;
         assignmentUrgencyThreshold = aut;
+        currentClass = c;
     }
 
     public boolean getNotificationsOn() {
@@ -19,4 +21,6 @@ public class PreferenceHolder {
     public long getAssignmentUrgencyThreshold() {
         return assignmentUrgencyThreshold;
     }
+
+    public String getCurrentClass() { return currentClass; }
 }
