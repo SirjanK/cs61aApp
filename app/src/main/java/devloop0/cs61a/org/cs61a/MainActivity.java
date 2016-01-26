@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean notify;
     private long urgency;
     ImageButton imageButton;
+    DrawerLayout drawerLayout;
+    ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,11 +133,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
+        drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
         ListView mainClassList = (ListView) findViewById(R.id.main_class_list);
         String[] test = { "CS 61A", "CS 61B" };
         mainClassList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, test));
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar, R.string.navigation_drawer_opened, R.string.navigation_drawer_closed) {
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar, R.string.navigation_drawer_opened, R.string.navigation_drawer_closed) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -150,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
         };
         toolBar.inflateMenu(R.menu.menu);
         setSupportActionBar(toolBar);
-        drawerLayout.setDrawerListener(actionBarDrawerToggle);
         final SharedPreferences.Editor editor = preferences.edit();
         mainClassList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -183,6 +184,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if(actionBarDrawerToggle.onOptionsItemSelected(menuItem))
+            return true;
         switch (menuItem.getItemId()) {
             case R.id.app_credits:
                 new AlertDialog.Builder(this).setTitle("Credits").setMessage(

@@ -2,6 +2,8 @@ package devloop0.cs61a.org.cs61a;
 
 import android.util.Log;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Scanner;
@@ -48,7 +50,7 @@ public class CS61BDictionaryParser extends DictionaryParser {
                 lastIndex = hwInformation[2].indexOf(")");
                 String dueDateString = hwInformation[2].substring(4, lastIndex);
                 String endDate = processDate(dueDateString + "/2016");
-                String startDate = "01/23/2016"; //TODO: Change this
+                String startDate = new SimpleDateFormat("MM/dd/yyyy").format(Calendar.getInstance().getTime());
                 String link = "http://cs61b.ug/sp16/materials/hw/" + name + "/" + name + ".html";
 
                 String[] assignList = {name, startDate, endDate, description, link, "Homework"};
@@ -75,7 +77,7 @@ public class CS61BDictionaryParser extends DictionaryParser {
                 lastIndex = projectInformation[2].indexOf(")");
                 String dueDateString = projectInformation[2].substring(4, lastIndex);
                 String endDate = processDate(dueDateString + "/2016");
-                String startDate = "01/23/2016"; //TODO: Change this
+                String startDate = new SimpleDateFormat("MM/dd/yyyy").format(Calendar.getInstance().getTime());
                 String link = "http://cs61b.ug/sp16/materials/proj/proj" + projNum + "/proj" + projNum + ".html";
 
                 String[] assignList = {name, startDate, endDate, description, link, "Project"};
