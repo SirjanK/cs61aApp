@@ -31,6 +31,8 @@ public class HTMLDownloader extends AsyncTask {
     AssignmentListGenerator inaccurateAssignmentListGenerator;
     CS61AService cs61AService;
     PreferenceHolder preferenceHolder;
+    String curr;
+
     public static final String CONNECTIONERROR = "CONNECTION ERROR FOR COURSE WEBSITE";
     public HTMLDownloader(RecyclerView rv, SwipeRefreshLayout srl, PreferenceHolder ph) {
         recyclerView = rv;
@@ -38,6 +40,7 @@ public class HTMLDownloader extends AsyncTask {
         sourceCode = "";
         background = false;
         preferenceHolder = ph;
+        curr = preferenceHolder.getCurrentClass();
     }
 
     public HTMLDownloader(CS61AService css, boolean b, PreferenceHolder ph) {
@@ -47,12 +50,20 @@ public class HTMLDownloader extends AsyncTask {
         background = b;
         cs61AService = css;
         preferenceHolder = ph;
+        curr = preferenceHolder.getCurrentClass();
     }
 
      private String grabHomePageSource() {
         try {
             DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
-            HttpGet request = new HttpGet("http://www.cs61a.org/");
+            HttpGet request = null;
+            if(curr.equals("cs61a")) {
+                request = new HttpGet("http://www.cs61a.org/");
+            }
+            else if(curr.equals("cs61b")) {
+                request = new HttpGet("http://cs61b.ug/sp16/");
+                Log.i("TESTBRUH", "Got it from here");
+            }
             HttpResponse httpResponse = defaultHttpClient.execute(request);
             InputStream inputStream = httpResponse.getEntity().getContent();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -95,13 +106,15 @@ public class HTMLDownloader extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
-        CS61ADictionaryParser par = null;
-        String curr = preferenceHolder.getCurrentClass();
+        DictionaryParser par = null;
         if(curr.equals("cs61a"))
             par = new CS61ADictionaryParser(sourceCode);
-        else if(curr.equals("cs61b"))
-            par = new CS61ADictionaryParser(sourceCode);
+        else if(curr.equals("cs61b")) {
+            Log.i("Another test", "Another");
+            par = new CS61BDictionaryParser(sourceCode);
+        }
         ArrayList<String[]> ar = par.getAssignments();
+        Log.i("Array List size", ar.size()+"");
 
         /*for(int i=0; i<ar.size(); i++)
             Log.i("Dictionary Parser", Arrays.toString(ar.get(i)));*/

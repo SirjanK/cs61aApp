@@ -1,5 +1,7 @@
 package devloop0.cs61a.org.cs61a;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Scanner;
@@ -33,20 +35,25 @@ public class CS61BDictionaryParser extends DictionaryParser {
             }
             else {
                 source = source.substring(index);
-                int lastIndex = source.indexOf("</tc");
-                String hwInfo = source.substring(index, lastIndex);
+                int lastIndex = source.indexOf("</td");
+                String hwInfo = source.substring(0, lastIndex);
+                Log.i("hwInfo", hwInfo);
                 String[] hwInformation = hwInfo.split(": | \\(");
                 String name = hwInformation[0];
                 if(name.equals("HW0")) { //TODO: Add custom thing for HW0
+                    source = source.substring(lastIndex);
+                    continue;
                 }
                 String description = hwInformation[1];
-                String dueDateString = hwInformation[2].substring(4, lastIndex - 1);
+                lastIndex = hwInformation[2].indexOf(")");
+                String dueDateString = hwInformation[2].substring(4, lastIndex);
                 String endDate = processDate(dueDateString + "/2016");
                 String startDate = "01/23/2016"; //TODO: Change this
                 String link = "http://cs61b.ug/sp16/materials/hw/" + name + "/" + name + ".html";
 
                 String[] assignList = {name, startDate, endDate, description, link, "Homework"};
                 assignments.add(assignList);
+                source = source.substring(lastIndex);
             }
         }
     }
@@ -59,19 +66,21 @@ public class CS61BDictionaryParser extends DictionaryParser {
             }
             else {
                 source = source.substring(index);
-                int lastIndex = source.indexOf("</tc");
-                String projectInfo = source.substring(index, lastIndex);
+                int lastIndex = source.indexOf("</td");
+                String projectInfo = source.substring(0, lastIndex);
                 String[] projectInformation = projectInfo.split(": | \\(");
                 String name = projectInformation[0];
                 int projNum = name.charAt(8) - 48;
                 String description = projectInformation[1];
-                String dueDateString = projectInformation[2].substring(4, lastIndex - 1);
+                lastIndex = projectInformation[2].indexOf(")");
+                String dueDateString = projectInformation[2].substring(4, lastIndex);
                 String endDate = processDate(dueDateString + "/2016");
                 String startDate = "01/23/2016"; //TODO: Change this
                 String link = "http://cs61b.ug/sp16/materials/proj/proj" + projNum + "/proj" + projNum + ".html";
 
                 String[] assignList = {name, startDate, endDate, description, link, "Project"};
                 assignments.add(assignList);
+                source = source.substring(lastIndex);
             }
         }
     }
@@ -82,7 +91,7 @@ public class CS61BDictionaryParser extends DictionaryParser {
 
     public String findTable() {
         int start = srcCode.indexOf("<tbody>");
-        int end = srcCode.lastIndexOf("<tbody>");
+        int end = srcCode.indexOf("</tbody>");
         return srcCode.substring(start, end);
     }
 
