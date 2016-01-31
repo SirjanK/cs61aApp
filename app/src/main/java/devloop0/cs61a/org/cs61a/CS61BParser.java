@@ -10,11 +10,11 @@ import java.util.Scanner;
  * Created by Sirjan on 1/23/2016.
  */
 
-public class CS61BDictionaryParser extends DictionaryParser {
+public class CS61BParser extends DictionaryParser {
     private ArrayList<String[]> assignments;
     private String srcCode;
 
-    public CS61BDictionaryParser(String sc) {
+    public CS61BParser(String sc) {
         srcCode = sc;
         assignments = new ArrayList<String[]>();
         String smallSource = findTable();
@@ -40,16 +40,22 @@ public class CS61BDictionaryParser extends DictionaryParser {
                 Log.i("hwInfo", hwInfo);
                 String[] hwInformation = hwInfo.split(": | \\(");
                 String name = hwInformation[0];
-                if(name.equals("HW0")) { //TODO: Add custom thing for HW0
+
+                if(name.equals("HW0")) { //NOTE: Add custom procedure for HW0 or get rid of it
                     source = source.substring(lastIndex);
                     continue;
                 }
+
+                Log.i("name", name);
+                char hwNum = name.charAt(3);
+                Log.i("hwNum", hwNum + "");
+
                 String description = hwInformation[1];
                 lastIndex = hwInformation[2].indexOf(")");
                 String dueDateString = hwInformation[2].substring(4, lastIndex);
                 String endDate = processDate(dueDateString + "/2016");
                 String startDate = "01/23/2016"; //TODO: Change this
-                String link = "http://cs61b.ug/sp16/materials/hw/" + name + "/" + name + ".html";
+                String link = "http://cs61b.ug/sp16/materials/hw/hw" + hwNum + "/hw" + hwNum + ".html";
 
                 String[] assignList = {name, startDate, endDate, description, link, "Homework"};
                 assignments.add(assignList);
@@ -86,7 +92,55 @@ public class CS61BDictionaryParser extends DictionaryParser {
     }
 
     public void setLabs(String source) {
+        while(true) {
+            int weekIndex = source.indexOf("<!-- Week");
+            if(weekIndex == -1) {
+                break;
+            }
+            source = source.substring(weekIndex);
+            int weekNum = source.charAt(10) - 48;
+            String dueDate = processDate(getDateForWeek(weekNum) + "/2016");
 
+            int labIndex = source.indexOf("materials/lab");
+            if(labIndex == -1) {
+                source = source.substring(weekIndex + 1);
+            }
+            else{
+                source = source.substring(labIndex);
+            }
+            while(labIndex != -1) {
+                int linkCloseIndex = source.indexOf("\">");
+                Log.i("linkCloseIndex", linkCloseIndex+"");
+                String link = "http://cs61b.ug/sp16/" + source.substring(0, linkCloseIndex);
+                source = source.substring(14);
+                String sourceName = source.substring(0, source.indexOf("/lab"));
+                String name = "Lab " + sourceName.substring(3);
+                String description = source.substring(source.indexOf("\">") + 2, source.indexOf("<"));
+                String startDate = "01/23/2016"; //TODO: Change this
+
+                String[] assignList = {name, startDate, dueDate, description, link, "Lab"};
+                assignments.add(assignList);
+                labIndex = source.indexOf("materials/lab");
+                if(labIndex > source.indexOf("<!-- Week")) {
+                    labIndex = -1;
+                }
+                else if(labIndex != -1) {
+                    source = source.substring(labIndex);
+                }
+                Log.i("LabName", name);
+            }
+        }
+    }
+
+    public String getDateForWeek(int week) {
+        String weekComment = "<!-- Week " + week + " -->";
+        int index = srcCode.indexOf(weekComment);
+        String srcSnippet = srcCode.substring(index);
+        int fridayIndex = srcSnippet.indexOf("<td>Fri");
+        String fridaySnippet = srcSnippet.substring(fridayIndex);
+        int closeIndex = fridaySnippet.indexOf("</td");
+
+        return fridaySnippet.substring(8, closeIndex);
     }
 
     public String findTable() {
