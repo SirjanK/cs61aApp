@@ -1,12 +1,9 @@
 package devloop0.cs61a.org.cs61a;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -17,8 +14,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 
 /**
  * Created by nathr on 10/13/2015.
@@ -114,9 +109,9 @@ public class HTMLDownloader extends AsyncTask {
         if(curr.equals("cs61a"))
             par = new CS61ADictionaryParser(sourceCode, preferenceHolder);
         else if(curr.equals("cs61b"))
-            par = new CS61BDictionaryParser(sourceCode, preferenceHolder);
+            par = new CS61BParser(sourceCode, preferenceHolder);
         else if(curr.equals("ee16b") || curr.equals("ee16a"))
-            par = new EE16ABDictionaryParser(sourceCode, preferenceHolder);
+            par = new EE16ABParser(sourceCode, preferenceHolder);
         ArrayList<String[]> ar = par.getAssignments();
         Log.i("Array List size", ar.size()+"");
 

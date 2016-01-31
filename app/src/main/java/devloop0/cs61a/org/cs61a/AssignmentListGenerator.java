@@ -40,7 +40,25 @@ public class AssignmentListGenerator {
             Collections.sort(assignmentArrayList, new Comparator<Assignment>() {
                 @Override
                 public int compare(Assignment lhs, Assignment rhs) {
-                    if(lhs.getReleaseTime() < rhs.getReleaseTime()) {
+                    if(lhs.isDone() && !rhs.isDone()) {
+                        return -1;
+                    }
+                    else if(!lhs.isDone() && rhs.isDone()) {
+                        return 1;
+                    }
+                    else if(lhs.assignmentIsOpen() && !rhs.assignmentIsOpen()) {
+                        return 1;
+                    }
+                    else if(!lhs.assignmentIsOpen() && rhs.assignmentIsOpen()) {
+                        return -1;
+                    }
+                    else if(lhs.getDueTime() < rhs.getDueTime()) {
+                        return -1;
+                    }
+                    else if(lhs.getDueTime() > rhs.getDueTime()) {
+                        return 1;
+                    }
+                    else if(lhs.getReleaseTime() < rhs.getReleaseTime()) {
                         return -1;
                     }
                     else if(lhs.getReleaseTime() > rhs.getReleaseTime()) {
