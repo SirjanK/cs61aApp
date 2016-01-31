@@ -40,22 +40,16 @@ public class CS61BDictionaryParser extends DictionaryParser {
                 Log.i("hwInfo", hwInfo);
                 String[] hwInformation = hwInfo.split(": | \\(");
                 String name = hwInformation[0];
-
-                if(name.equals("HW0")) { //NOTE: Add custom procedure for HW0 or get rid of it
+                if(name.equals("HW0")) { //TODO: Add custom thing for HW0
                     source = source.substring(lastIndex);
                     continue;
                 }
-
-                Log.i("name", name);
-                char hwNum = name.charAt(3);
-                Log.i("hwNum", hwNum + "");
-
                 String description = hwInformation[1];
                 lastIndex = hwInformation[2].indexOf(")");
                 String dueDateString = hwInformation[2].substring(4, lastIndex);
                 String endDate = processDate(dueDateString + "/2016");
                 String startDate = "01/23/2016"; //TODO: Change this
-                String link = "http://cs61b.ug/sp16/materials/hw/hw" + hwNum + "/hw" + hwNum + ".html";
+                String link = "http://cs61b.ug/sp16/materials/hw/" + name + "/" + name + ".html";
 
                 String[] assignList = {name, startDate, endDate, description, link, "Homework"};
                 assignments.add(assignList);
