@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Calendar;
 import java.util.Date;
 /**
  * Created by nathr on 10/24/2015.
@@ -79,6 +80,11 @@ public class Assignment {
 
     public String getAssignmentLink() {
         return assignmentLink;
+    }
+
+    public boolean isDone() {
+        Calendar calendar = Calendar.getInstance();
+        return getDueTime() < calendar.getTimeInMillis();
     }
 
     public AssignmentKind getAssignmentKind() {
