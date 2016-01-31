@@ -26,7 +26,8 @@ public class AssignmentListGenerator {
     //  2. Release date (String)
     //  3. Due date (String)
     //  4. Assignment description
-    //  5. Assignment kind (string) Lab/Homework/Project/Quiz
+    //  5. Assignment link
+    //  6. Assignment kind (string) Lab/Homework/Project/Quiz
     public AssignmentListGenerator(ArrayList<String[]> assignmentDataList) {
         assignmentArrayList = new ArrayList<Assignment>();
         try {

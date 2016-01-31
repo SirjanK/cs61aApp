@@ -32,7 +32,7 @@ public class CS61AService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        HTMLDownloader htmlDownloader = new HTMLDownloader(this, true, new PreferenceHolder(true, 2 * 24 * 60 * 60 * 1000, PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("class", "cs61a")));
+        HTMLDownloader htmlDownloader = new HTMLDownloader(this, true, new PreferenceHolder(true, 2 * 24 * 60 * 60 * 1000, PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("class", "cs61a"), false));
         htmlDownloader.execute();
         return Service.START_STICKY;
     }

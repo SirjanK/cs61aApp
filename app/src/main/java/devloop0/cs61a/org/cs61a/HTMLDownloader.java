@@ -32,6 +32,7 @@ public class HTMLDownloader extends AsyncTask {
     CS61AService cs61AService;
     PreferenceHolder preferenceHolder;
     String curr;
+    String season = null, year = null;
 
     public static final String CONNECTIONERROR = "CONNECTION ERROR FOR COURSE WEBSITE";
     public HTMLDownloader(RecyclerView rv, SwipeRefreshLayout srl, PreferenceHolder ph) {
@@ -41,6 +42,8 @@ public class HTMLDownloader extends AsyncTask {
         background = false;
         preferenceHolder = ph;
         curr = preferenceHolder.getCurrentClass();
+        season = ph.getSeason() == PreferenceHolder.SeasonKind.KIND_FALL ? "fa" : "sp";
+        year = ph.getTwoDigitYear();
     }
 
     public HTMLDownloader(CS61AService css, boolean b, PreferenceHolder ph) {
@@ -51,19 +54,20 @@ public class HTMLDownloader extends AsyncTask {
         cs61AService = css;
         preferenceHolder = ph;
         curr = preferenceHolder.getCurrentClass();
+        season = ph.getSeason() == PreferenceHolder.SeasonKind.KIND_FALL ? "fa" : "sp";
+        year = ph.getTwoDigitYear();
     }
 
      private String grabHomePageSource() {
         try {
             DefaultHttpClient defaultHttpClient = new DefaultHttpClient();
             HttpGet request = null;
-            if(curr.equals("cs61a")) {
+            if(curr.equals("cs61a"))
                 request = new HttpGet("http://www.cs61a.org/");
-            }
-            else if(curr.equals("cs61b")) {
-                request = new HttpGet("http://cs61b.ug/sp16/");
-                Log.i("TESTBRUH", "Got it from here");
-            }
+            else if(curr.equals("cs61b"))
+                request = new HttpGet("http://cs61b.ug/" + season + year + "/");
+            else if(curr.equals("ee16b") || curr.equals("ee16a"))
+                request = new HttpGet("http://inst.eecs.berkeley.edu/~" + curr + "/" + season + year + "/");
             HttpResponse httpResponse = defaultHttpClient.execute(request);
             InputStream inputStream = httpResponse.getEntity().getContent();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -108,11 +112,11 @@ public class HTMLDownloader extends AsyncTask {
         super.onPostExecute(o);
         DictionaryParser par = null;
         if(curr.equals("cs61a"))
-            par = new CS61ADictionaryParser(sourceCode);
-        else if(curr.equals("cs61b")) {
-            Log.i("Another test", "Another");
-            par = new CS61BDictionaryParser(sourceCode);
-        }
+            par = new CS61ADictionaryParser(sourceCode, preferenceHolder);
+        else if(curr.equals("cs61b"))
+            par = new CS61BDictionaryParser(sourceCode, preferenceHolder);
+        else if(curr.equals("ee16b") || curr.equals("ee16a"))
+            par = new EE16ABDictionaryParser(sourceCode, preferenceHolder);
         ArrayList<String[]> ar = par.getAssignments();
         Log.i("Array List size", ar.size()+"");
 

@@ -14,10 +14,12 @@ public class CS61ADictionaryParser extends DictionaryParser
 {
     private ArrayList<String[]> assignments;
     private String srcCode;
+    PreferenceHolder preferenceHolder = null;
 
-    public CS61ADictionaryParser(String sc)
+    public CS61ADictionaryParser(String sc, PreferenceHolder ph)
     {
         srcCode = sc;
+        preferenceHolder = ph;
         Log.i("source", srcCode.substring(10));
         assignments = new ArrayList<String[]>();
 

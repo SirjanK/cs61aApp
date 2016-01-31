@@ -137,7 +137,7 @@ public class AssignmentActivity extends AppCompatActivity {
         }
         drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
         ListView mainClassList = (ListView) findViewById(R.id.main_class_list);
-        String[] test = { "CS 61A", "CS 61B" };
+        String[] test = { "CS 61A", "CS 61B", "EE 16A", "EE 16B" };
         mainClassList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, test));
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, backgroundToolbar, R.string.navigation_drawer_opened, R.string.navigation_drawer_closed) {
             @Override
@@ -166,6 +166,16 @@ public class AssignmentActivity extends AppCompatActivity {
                     break;
                     case 1: {
                         editor.putString("class", "cs61b");
+                        editor.commit();
+                    }
+                    break;
+                    case 2: {
+                        editor.putString("class", "ee16a");
+                        editor.commit();
+                    }
+                    break;
+                    case 3: {
+                        editor.putString("class", "ee16b");
                         editor.commit();
                     }
                     break;

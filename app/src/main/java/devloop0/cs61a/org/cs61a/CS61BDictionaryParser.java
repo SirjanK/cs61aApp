@@ -15,11 +15,16 @@ import java.util.Scanner;
 public class CS61BDictionaryParser extends DictionaryParser {
     private ArrayList<String[]> assignments;
     private String srcCode;
+    PreferenceHolder preferenceHolder = null;
+    String season = null, year = null;
 
-    public CS61BDictionaryParser(String sc) {
+    public CS61BDictionaryParser(String sc, PreferenceHolder ph) {
         srcCode = sc;
         assignments = new ArrayList<String[]>();
         String smallSource = findTable();
+        preferenceHolder = ph;
+        season = ph.getSeason() == PreferenceHolder.SeasonKind.KIND_FALL ? "fa" : "sp";
+        year = ph.getTwoDigitYear();
         setAssignments(smallSource);
     }
 
@@ -49,9 +54,9 @@ public class CS61BDictionaryParser extends DictionaryParser {
                 String description = hwInformation[1];
                 lastIndex = hwInformation[2].indexOf(")");
                 String dueDateString = hwInformation[2].substring(4, lastIndex);
-                String endDate = processDate(dueDateString + "/2016");
-                String startDate = new SimpleDateFormat("MM/dd/yyyy").format(Calendar.getInstance().getTime());
-                String link = "http://cs61b.ug/sp16/materials/hw/" + name + "/" + name + ".html";
+                String endDate = processDate(dueDateString + "/" + year);
+                String startDate = new SimpleDateFormat("MM/dd/yy").format(Calendar.getInstance().getTime());
+                String link = "http://cs61b.ug/" + season + year + "/materials/hw/" + name + "/" + name + ".html";
 
                 String[] assignList = {name, startDate, endDate, description, link, "Homework"};
                 assignments.add(assignList);
@@ -76,9 +81,9 @@ public class CS61BDictionaryParser extends DictionaryParser {
                 String description = projectInformation[1];
                 lastIndex = projectInformation[2].indexOf(")");
                 String dueDateString = projectInformation[2].substring(4, lastIndex);
-                String endDate = processDate(dueDateString + "/2016");
-                String startDate = new SimpleDateFormat("MM/dd/yyyy").format(Calendar.getInstance().getTime());
-                String link = "http://cs61b.ug/sp16/materials/proj/proj" + projNum + "/proj" + projNum + ".html";
+                String endDate = processDate(dueDateString + "/" + year);
+                String startDate = new SimpleDateFormat("MM/dd/yy").format(Calendar.getInstance().getTime());
+                String link = "http://cs61b.ug/" + season + year + "/materials/proj/proj" + projNum + "/proj" + projNum + ".html";
 
                 String[] assignList = {name, startDate, endDate, description, link, "Project"};
                 assignments.add(assignList);

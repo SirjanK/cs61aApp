@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         String currentClass = preferences.getString("class", "cs61a");
-        String title = (currentClass.equals("cs61a") ? "CS 61A" : (currentClass.equals("cs61b") ? "CS 61B" : ""));
+        String title = (currentClass.equals("cs61a") ? "CS 61A" : (currentClass.equals("cs61b") ? "CS 61B" : (currentClass.equals("ee16a") ? "EE 16A" : "EE 16B")));
         toolBar.setTitle(title);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         Log.i("AssignmentUrgency", urgentString);
         Log.i("NotificationsOn", notify + "");
         urgency = convertToMillis(urgentString);
-        final PreferenceHolder preferenceHolder = new PreferenceHolder(notify, urgency, currentClass);
+        final PreferenceHolder preferenceHolder = new PreferenceHolder(notify, urgency, currentClass, false); // change to redownload page
         imageButton = (ImageButton) findViewById(R.id.announcements);
 
         swipeRefreshLayout.setColorSchemeColors(Color.parseColor("#F44336"), Color.parseColor("#3F51B5"), Color.parseColor("#FFC107"), Color.parseColor("#4CAF50"));
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
         drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
         ListView mainClassList = (ListView) findViewById(R.id.main_class_list);
-        String[] test = { "CS 61A", "CS 61B" };
+        String[] test = { "CS 61A", "CS 61B", "EE 16A" , "EE 16B" };
         mainClassList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, test));
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar, R.string.navigation_drawer_opened, R.string.navigation_drawer_closed) {
             @Override
@@ -164,6 +164,16 @@ public class MainActivity extends AppCompatActivity {
                     break;
                     case 1: {
                         editor.putString("class", "cs61b");
+                        editor.commit();
+                    }
+                    break;
+                    case 2: {
+                        editor.putString("class", "ee16a");
+                        editor.commit();
+                    }
+                    break;
+                    case 3: {
+                        editor.putString("class", "ee16b");
                         editor.commit();
                     }
                     break;
