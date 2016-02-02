@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
-        notify = preferences.getBoolean("notifications", true);
+        notify = preferences.getBoolean("notifications", false);
         String urgentString = preferences.getString("urgency", "2 days");
         Log.i("AssignmentUrgency", urgentString);
         Log.i("NotificationsOn", notify + "");

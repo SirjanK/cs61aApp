@@ -43,7 +43,7 @@ public class SettingsActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
             Preference pref = findPreference("restart");
-            boolean switchOn = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("notifications", true);
+            boolean switchOn = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("notifications", false);
             SwitchPreference notificationsOn = (SwitchPreference) findPreference("notifications");
             notificationsOn.setChecked(switchOn);
             String urgentString = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("urgency", "2 days");
