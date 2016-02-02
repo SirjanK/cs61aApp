@@ -83,12 +83,16 @@ public class CS61BParser extends DictionaryParser {
                 String[] projectInformation = projectInfo.split(": | \\(");
                 String name = projectInformation[0];
                 int projNum = name.charAt(8) - 48;
+                String projectLetter = "";
+                if(projNum == 1) {
+                    projectLetter = (name.charAt(9) + "").toLowerCase();
+                }
                 String description = projectInformation[1];
                 lastIndex = projectInformation[2].indexOf(")");
                 String dueDateString = projectInformation[2].substring(4, lastIndex);
                 String endDate = processDate(dueDateString + "/" + year);
                 String startDate = new SimpleDateFormat("MM/dd/yy").format(Calendar.getInstance().getTime());
-                String link = "http://cs61b.ug/" + season + year + "/materials/proj/proj" + projNum + "/proj" + projNum + ".html";
+                String link = "http://cs61b.ug/" + season + year + "/materials/proj/proj" + projNum + projectLetter + "/proj" + projNum + projectLetter + ".html";
                 String[] assignList = {name, startDate, endDate, description, link, "Project"};
                 assignments.add(assignList);
                 source = source.substring(lastIndex);
